@@ -99,13 +99,21 @@ export interface NpsYearData {
   totalTaxSaved: number;
 }
 
+export interface NpsVsMfSensitivity {
+  breakEvenMfReturn: number | null;
+  breakEvenTaxBracket: number | null;
+}
+
 export interface NpsVsMfResult {
   yearlyData: NpsYearData[];
   finalNpsCorpus: number; 
   finalMfCorpus: number; 
+  annualEmployerContribution: number;
+  annualTaxSaved: number;
   totalTaxSaved: number;
   netWealthGapAtHorizon: number;
   winner: 'nps' | 'mf' | 'tie';
+  sensitivity: NpsVsMfSensitivity;
 }
 
 export interface EpfVsIndexInputs {

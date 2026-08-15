@@ -66,8 +66,8 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
       <div className="mb-2">
         <h4 className="text-[10px] font-semibold text-white/30 uppercase tracking-[0.15em] mb-2">Market Assumptions</h4>
         <div className="space-y-1">
-          <CompactSlider label="Nps CAGR" name="npsExpectedCagr" min={6} max={15} step={0.5} inputType="percent" icon={<Percent size={13} />} value={inputs.npsExpectedCagr} onChange={handleChange} accent="emerald" />
-          <CompactSlider label="Mutual Fund CAGR" name="mfExpectedCagr" min={8} max={20} step={0.5} inputType="percent" icon={<TrendingUp size={13} />} value={inputs.mfExpectedCagr} onChange={handleChange} accent="emerald" />
+          <CompactSlider label="Expected Return (NPS)" name="npsExpectedCagr" min={6} max={15} step={0.5} inputType="percent" icon={<Percent size={13} />} value={inputs.npsExpectedCagr} onChange={handleChange} accent="emerald" />
+          <CompactSlider label="Expected Return (MF)" name="mfExpectedCagr" min={8} max={20} step={0.5} inputType="percent" icon={<TrendingUp size={13} />} value={inputs.mfExpectedCagr} onChange={handleChange} accent="emerald" />
           <CompactSlider label="Horizon" name="investmentHorizonYears" min={5} max={40} step={1} inputType="years" icon={<Clock size={13} />} value={inputs.investmentHorizonYears} onChange={handleChange} accent="emerald" />
         </div>
       </div>

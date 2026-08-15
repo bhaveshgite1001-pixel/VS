@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
 import { EmiVsUpfrontInputs } from '@/lib/types/finance';
 import { calculateEmiVsUpfront } from '@/lib/finance/emi-vs-upfront';
 import { VerdictBar } from '@/components/emi-vs-upfront/VerdictBar';
@@ -25,24 +24,27 @@ export default function EmiVsUpfrontPage() {
   const result = useMemo(() => calculateEmiVsUpfront(inputs), [inputs]);
 
   return (
-    <>
-      {/* ══════ DESKTOP: fixed 100vh side-by-side ══════ */}
-      <div className="hidden lg:flex h-screen max-h-screen overflow-hidden flex-col bg-[#0a0a0f] text-white p-4">
-        <div className="fixed inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-indigo-600/[0.04] blur-[120px]" />
-          <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full bg-emerald-600/[0.03] blur-[120px]" />
+    <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col p-3 md:p-4 relative pb-12">
+      {/* Ambient background blobs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-indigo-600/[0.04] blur-[120px]" />
+        <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full bg-emerald-600/[0.03] blur-[120px]" />
+      </div>
+
+      <Header subtitle="No-Cost EMI vs. Upfront Decision Engine" />
+
+      {/* Main Single-Tree Responsive Layout */}
+      <div className="relative z-10 flex-1 flex flex-col lg:flex-row gap-4 mt-2">
+        {/* Controls Column */}
+        <div className="w-full lg:w-[370px] xl:w-[390px] flex-shrink-0">
+          <ControlPanel inputs={inputs} setInputs={setInputs} />
         </div>
 
-        <Header subtitle="Calculator Engine" />
+        {/* Analytics & Visualization Column */}
+        <div className="flex-1 flex flex-col gap-4 min-w-0">
+          <VerdictBar result={result} tenureMonths={inputs.emiTenureMonths} />
 
-        <div className="relative z-10 flex-1 min-h-0 flex gap-4">
-          <div className="w-[370px] xl:w-[390px] flex-shrink-0 min-h-0">
-            <ControlPanel inputs={inputs} setInputs={setInputs} />
-          </div>
-          <div className="flex-1 min-h-0 flex flex-col gap-4">
-            <div className="flex-shrink-0">
-              <VerdictBar result={result} tenureMonths={inputs.emiTenureMonths} />
-            </div>
+          <div className="h-[380px] lg:h-[400px] w-full">
             <ComparisonChart 
               data={result.monthlyData}
               xAxisKey="month"
@@ -60,42 +62,6 @@ export default function EmiVsUpfrontPage() {
           </div>
         </div>
       </div>
-
-      {/* ══════ MOBILE: scrollable vertical flow ══════ */}
-      <div className="lg:hidden min-h-screen bg-[#0a0a0f] text-white">
-        <div className="fixed inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -top-20 -left-20 w-[300px] h-[300px] rounded-full bg-indigo-600/[0.04] blur-[80px]" />
-          <div className="absolute -bottom-20 -right-20 w-[300px] h-[300px] rounded-full bg-emerald-600/[0.03] blur-[80px]" />
-        </div>
-
-        <div className="relative z-10 p-3 flex flex-col">
-          <Header subtitle="No-Cost EMI vs. Upfront" />
-
-          <div className="mt-2 flex flex-col gap-3">
-            <VerdictBar result={result} tenureMonths={inputs.emiTenureMonths} />
-            <div className="h-[400px]">
-              <ComparisonChart 
-                data={result.monthlyData}
-                xAxisKey="month"
-                lineA={{ key: 'upfrontNetWorth', label: 'Upfront Net Value', color: '#6366f1' }}
-                lineB={{ key: 'emiNetWorth', label: 'EMI Net Value', color: '#10b981' }}
-                title="Net Value Over Time"
-                formatYAxis={(v) => {
-                  if (Math.abs(v) >= 1e7) return `₹${(v/1e7).toFixed(1)}Cr`;
-                  if (Math.abs(v) >= 1e5) return `₹${(v/1e5).toFixed(0)}L`;
-                  return `₹${(v/1e3).toFixed(0)}k`;
-                }}
-                formatTooltipValue={formatINR}
-                xAxisLabelPrefix="Month "
-              />
-            </div>
-          </div>
-
-          <div className="mt-6 mb-6">
-            <ControlPanel inputs={inputs} setInputs={setInputs} />
-          </div>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
