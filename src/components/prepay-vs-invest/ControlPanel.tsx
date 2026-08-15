@@ -26,7 +26,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
         setInputs(prev => ({ ...prev, lumpsumAmount: 500000, monthlyAdditionalPrepayment: 50000 }));
         break;
       case 'steady':
-        setInputs(prev => ({ ...prev, lumpsumAmount: 0, monthlyAdditionalPrepayment: 25000 }));
+        setInputs(prev => ({ ...prev, lumpsumAmount: 0, monthlyAdditionalPrepayment: 25000, investmentExpectedCagr: 10 }));
         break;
     }
   };
@@ -36,9 +36,9 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
       {/* Presets */}
       <div className="flex gap-2 mb-5 flex-shrink-0 overflow-x-auto pb-1 scrollbar-none">
         {[
-          { key: 'bonus' as const, label: '₹10L Bonus', icon: Banknote },
-          { key: 'aggressive' as const, label: 'Aggressive EMIs', icon: Flame },
-          { key: 'steady' as const, label: 'Steady SIP', icon: Target },
+          { key: 'bonus' as const, label: 'Bonus Windfall', icon: Banknote },
+          { key: 'aggressive' as const, label: 'Aggressive Prepayment', icon: Flame },
+          { key: 'steady' as const, label: 'Conservative Investing', icon: Target },
         ].map(p => {
           const Icon = p.icon;
           return (

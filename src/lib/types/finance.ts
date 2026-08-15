@@ -58,6 +58,17 @@ export interface PrepayYearData {
   netWorthInvest: number;
 }
 
+export interface ConfidenceRangePoint {
+  cagr: number;
+  winner: 'prepay' | 'invest' | 'tie';
+  differenceAmount: number;
+}
+
+export interface PrepayVsInvestSensitivity {
+  breakEvenCagr: number | null;
+  confidenceRange: ConfidenceRangePoint[];
+}
+
 export interface PrepayVsInvestResult {
   monthlyData: PrepayYearData[];
   yearlyData: PrepayYearData[];
@@ -65,8 +76,11 @@ export interface PrepayVsInvestResult {
   loanClearedMonthInvest: number;
   totalInterestPrepay: number;
   totalInterestInvest: number;
+  finalNetWorthPrepay: number;
+  finalNetWorthInvest: number;
   netWealthGapAtEnd: number;
   winner: 'prepay' | 'invest' | 'tie';
+  sensitivity: PrepayVsInvestSensitivity;
 }
 
 export interface NpsVsMfInputs {

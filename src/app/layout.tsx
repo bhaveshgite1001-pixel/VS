@@ -13,7 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Financial VS | Rent vs. Buy",
+  title: {
+    default: "Financial VS | Decision Engine",
+    template: "%s | Financial VS"
+  },
   description: "A high-precision, interactive decision engine to resolve classic personal finance dilemmas.",
 };
 

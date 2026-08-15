@@ -126,6 +126,54 @@ export function calculatePrepayVsInvest(inputs: PrepayVsInvestInputs): PrepayVsI
     winner = netWealthGapAtEnd > 0 ? 'prepay' : 'invest';
   }
 
+  // Binary search for Break-even Investment CAGR
+  const findBreakEvenCagr = (): number | null => {
+    let low = 0;
+    let high = 35;
+
+    const calcGapAtCagr = (cagr: number) => {
+      const res = calculatePrepayVsInvestInternal({ ...inputs, investmentExpectedCagr: cagr });
+      return res.finalNWPrepay - res.finalNWInvest;
+    };
+
+    const lowGap = calcGapAtCagr(low);
+    const highGap = calcGapAtCagr(high);
+
+    if ((lowGap >= 0 && highGap >= 0) || (lowGap <= 0 && highGap <= 0)) {
+      return null;
+    }
+
+    for (let i = 0; i < 20; i++) {
+      const mid = (low + high) / 2;
+      const gap = calcGapAtCagr(mid);
+      if (Math.abs(gap) < 1000) {
+        return Math.round(mid * 10) / 10;
+      }
+      if (gap > 0) {
+        low = mid; // Prepay wins, need higher CAGR to tie
+      } else {
+        high = mid; // Invest wins, need lower CAGR to tie
+      }
+    }
+    return Math.round(((low + high) / 2) * 10) / 10;
+  };
+
+  // Confidence Range calculation across 8%, 10%, 12%, 14% CAGR
+  const confidenceRates = [8, 10, 12, 14];
+  const confidenceRange = confidenceRates.map(rate => {
+    const res = calculatePrepayVsInvestInternal({ ...inputs, investmentExpectedCagr: rate });
+    const diff = res.finalNWPrepay - res.finalNWInvest;
+    let w: 'prepay' | 'invest' | 'tie' = 'tie';
+    if (Math.abs(diff) > 1000) {
+      w = diff > 0 ? 'prepay' : 'invest';
+    }
+    return {
+      cagr: rate,
+      winner: w,
+      differenceAmount: Math.abs(diff),
+    };
+  });
+
   return {
     monthlyData,
     yearlyData,
@@ -133,7 +181,73 @@ export function calculatePrepayVsInvest(inputs: PrepayVsInvestInputs): PrepayVsI
     loanClearedMonthInvest,
     totalInterestPrepay,
     totalInterestInvest,
+    finalNetWorthPrepay: finalNWPrepay,
+    finalNetWorthInvest: finalNWInvest,
     netWealthGapAtEnd,
     winner,
+    sensitivity: {
+      breakEvenCagr: findBreakEvenCagr(),
+      confidenceRange,
+    }
   };
+}
+
+// Internal simulation helper to calculate final net worths without infinite recursion
+function calculatePrepayVsInvestInternal(inputs: PrepayVsInvestInputs) {
+  const {
+    outstandingLoanBalance, remainingTenureYears, loanInterestRate,
+    lumpsumAmount, monthlyAdditionalPrepayment, investmentExpectedCagr, capitalGainsTaxRate
+  } = inputs;
+
+  const rLoan = loanInterestRate / 100 / 12;
+  const rInvest = investmentExpectedCagr / 100 / 12;
+  const nMonths = remainingTenureYears * 12;
+
+  const baseEmi = rLoan > 0 
+    ? (outstandingLoanBalance * rLoan * Math.pow(1 + rLoan, nMonths)) / (Math.pow(1 + rLoan, nMonths) - 1)
+    : outstandingLoanBalance / nMonths;
+
+  let loanBalancePrepay = Math.max(0, outstandingLoanBalance - lumpsumAmount);
+  let loanBalanceInvest = outstandingLoanBalance;
+
+  let portfolioPrepay = 0;
+  let portfolioInvest = lumpsumAmount;
+  let investedPrincipalInvest = lumpsumAmount;
+  let investedPrincipalPrepay = 0;
+
+  for (let m = 1; m <= nMonths; m++) {
+    if (loanBalanceInvest > 0) {
+      const interest = loanBalanceInvest * rLoan;
+      const principalPart = baseEmi - interest;
+      loanBalanceInvest = Math.max(0, loanBalanceInvest - principalPart);
+    }
+    portfolioInvest = portfolioInvest * (1 + rInvest) + monthlyAdditionalPrepayment;
+    investedPrincipalInvest += monthlyAdditionalPrepayment;
+
+    if (loanBalancePrepay > 0) {
+      const interest = loanBalancePrepay * rLoan;
+      const totalPayment = baseEmi + monthlyAdditionalPrepayment;
+      const principalPart = totalPayment - interest;
+      loanBalancePrepay -= principalPart;
+      if (loanBalancePrepay <= 0) {
+        portfolioPrepay += Math.abs(loanBalancePrepay);
+        investedPrincipalPrepay += Math.abs(loanBalancePrepay);
+        loanBalancePrepay = 0;
+      }
+    } else {
+      const investAmount = baseEmi + monthlyAdditionalPrepayment;
+      portfolioPrepay = portfolioPrepay * (1 + rInvest) + investAmount;
+      investedPrincipalPrepay += investAmount;
+    }
+  }
+
+  const gainsPrepay = Math.max(0, portfolioPrepay - investedPrincipalPrepay);
+  const taxPrepay = gainsPrepay * (capitalGainsTaxRate / 100);
+  const finalNWPrepay = portfolioPrepay - taxPrepay - loanBalancePrepay;
+
+  const gainsInvest = Math.max(0, portfolioInvest - investedPrincipalInvest);
+  const taxInvest = gainsInvest * (capitalGainsTaxRate / 100);
+  const finalNWInvest = portfolioInvest - taxInvest - loanBalanceInvest;
+
+  return { finalNWPrepay, finalNWInvest };
 }
