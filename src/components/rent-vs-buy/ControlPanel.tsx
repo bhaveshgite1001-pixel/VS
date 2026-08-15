@@ -23,7 +23,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
     setInputs(prev => ({ ...prev, [name as keyof RentVsBuyInputs]: value }));
   }, [setInputs]);
 
-  const applyPreset = (preset: 'tier1' | 'starter' | 'aggressive') => {
+  const applyPreset = (preset: 'tier1' | 'starter' | 'high_growth') => {
     switch (preset) {
       case 'tier1':
         setInputs(prev => ({ ...prev, propertyValue: 15000000, currentMonthlyRent: 45000, propertyAppreciationRate: 6, equityCagr: 12 }));
@@ -31,7 +31,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
       case 'starter':
         setInputs(prev => ({ ...prev, propertyValue: 6000000, currentMonthlyRent: 18000, propertyAppreciationRate: 5, equityCagr: 12 }));
         break;
-      case 'aggressive':
+      case 'high_growth':
         setInputs(prev => ({ ...prev, equityCagr: 15, rentEscalationRate: 8, propertyAppreciationRate: 7 }));
         break;
     }
@@ -57,7 +57,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
         {[
           { key: 'tier1' as const, label: 'Metro ₹1.5Cr', icon: MapPin },
           { key: 'starter' as const, label: 'Starter ₹60L', icon: Home },
-          { key: 'aggressive' as const, label: 'Aggressive', icon: Flame },
+          { key: 'high_growth' as const, label: 'High Growth', icon: Flame },
         ].map(p => {
           const Icon = p.icon;
           return (

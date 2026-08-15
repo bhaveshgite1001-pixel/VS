@@ -22,6 +22,11 @@ export interface YearData {
   renterPortfolio: number;
 }
 
+export interface RentVsBuySensitivity {
+  breakEvenAppreciationRate: number | null;
+  breakEvenEquityCagr: number | null;
+}
+
 export interface RentVsBuyResult {
   yearlyData: YearData[];
   breakEvenYear: number | null;
@@ -29,6 +34,7 @@ export interface RentVsBuyResult {
   totalRentPaid: number;
   netWealthGapAtHorizon: number;
   winner: 'buyer' | 'renter' | 'tie';
+  sensitivity: RentVsBuySensitivity;
 }
 
 export interface PrepayVsInvestInputs {

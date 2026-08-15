@@ -71,10 +71,10 @@ export const VerdictBar: React.FC<VerdictBarProps> = ({ result, horizon, emi, cu
     },
     {
       icon: <ArrowRightLeft size={14} />,
-      label: "EMI − Rent",
-      numericValue: monthlyCashFlowDiff,
-      prefix: monthlyCashFlowDiff > 0 ? '+' : '',
+      label: "Monthly Cash-Flow Gap",
+      numericValue: Math.abs(monthlyCashFlowDiff),
       isCurrency: true,
+      prefix: monthlyCashFlowDiff > 0 ? "Buyer pays +" : "Renter pays +",
       accentClass: monthlyCashFlowDiff > 0 ? 'text-rose-400 bg-rose-400/10 border-rose-500/20' : 'text-emerald-400 bg-emerald-400/10 border-emerald-500/20'
     }
   ];
