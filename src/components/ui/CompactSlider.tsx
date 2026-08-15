@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber';
 import { formatINR, formatINRInput, parseINRInput } from '@/lib/utils/formatters';
 
-export type InputType = 'currency' | 'percent' | 'years';
+export type InputType = 'currency' | 'percent' | 'years' | 'months';
 
 interface CompactSliderProps {
   label: string;
@@ -34,6 +34,7 @@ export function CompactSlider({ label, name, min, max, step, inputType, icon, va
       case 'currency': return <AnimatedNumber value={value} formatFn={formatINR} />;
       case 'percent': return <><AnimatedNumber value={value} formatFn={(v) => rp(v).toString()} />%</>;
       case 'years': return <><AnimatedNumber value={value} formatFn={(v) => Math.round(v).toString()} /> yrs</>;
+      case 'months': return <><AnimatedNumber value={value} formatFn={(v) => Math.round(v).toString()} /> mo</>;
     }
   };
 
@@ -42,6 +43,7 @@ export function CompactSlider({ label, name, min, max, step, inputType, icon, va
       case 'currency': return formatINRInput(value);
       case 'percent': return String(rp(value));
       case 'years': return String(Math.round(value));
+      case 'months': return String(Math.round(value));
     }
   };
 
@@ -90,6 +92,7 @@ export function CompactSlider({ label, name, min, max, step, inputType, icon, va
               className={`w-24 text-right text-[12px] font-medium text-white bg-white/[0.03] border border-white/10 px-2 py-0.5 rounded outline-none focus:border-${accent}-500/50`} />
             {inputType === 'percent' && <span className="text-[12px] text-white/40">%</span>}
             {inputType === 'years' && <span className="text-[12px] text-white/40">yrs</span>}
+            {inputType === 'months' && <span className="text-[12px] text-white/40">mo</span>}
           </div>
         ) : (
           <button onClick={startEdit}

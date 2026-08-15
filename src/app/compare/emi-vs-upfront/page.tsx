@@ -5,6 +5,9 @@ import { EmiVsUpfrontInputs } from '@/lib/types/finance';
 import { calculateEmiVsUpfront } from '@/lib/finance/emi-vs-upfront';
 import { VerdictBar } from '@/components/emi-vs-upfront/VerdictBar';
 import { ControlPanel } from '@/components/emi-vs-upfront/ControlPanel';
+import { WhyUpfrontWins } from '@/components/emi-vs-upfront/WhyUpfrontWins';
+import { EmiSensitivity } from '@/components/emi-vs-upfront/EmiSensitivity';
+import { EmiFeeDrawer } from '@/components/emi-vs-upfront/EmiFeeDrawer';
 import { ComparisonChart } from '@/components/ui/ComparisonChart';
 import { Header } from '@/components/ui/Header';
 import { formatINR } from '@/lib/utils/formatters';
@@ -60,6 +63,15 @@ export default function EmiVsUpfrontPage() {
               xAxisLabelPrefix="Month "
             />
           </div>
+
+          {/* Decision Rationale Explanation */}
+          <WhyUpfrontWins result={result} inputs={inputs} />
+
+          {/* Investment Return Sensitivity Tipping Point */}
+          <EmiSensitivity result={result} inputs={inputs} />
+
+          {/* Fee & Merchant Subvention Breakdown Drawer */}
+          <EmiFeeDrawer inputs={inputs} result={result} />
         </div>
       </div>
     </div>

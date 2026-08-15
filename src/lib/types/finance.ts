@@ -156,6 +156,10 @@ export interface EmiMonthData {
   emiNetWorth: number;
 }
 
+export interface EmiVsUpfrontSensitivity {
+  breakEvenInvestmentCagr: number | null;
+}
+
 export interface EmiVsUpfrontResult {
   monthlyData: EmiMonthData[];
   finalUpfrontNetWorth: number;
@@ -163,4 +167,5 @@ export interface EmiVsUpfrontResult {
   totalHiddenCosts: number; 
   netWealthGapAtEnd: number;
   winner: 'upfront' | 'emi' | 'tie';
+  sensitivity: EmiVsUpfrontSensitivity;
 }

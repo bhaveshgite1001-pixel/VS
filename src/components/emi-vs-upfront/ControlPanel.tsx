@@ -16,7 +16,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
     setInputs(prev => ({ ...prev, [name as keyof EmiVsUpfrontInputs]: value }));
   }, [setInputs]);
 
-  const applyPreset = (preset: 'phone' | 'laptop' | 'car') => {
+  const applyPreset = (preset: 'phone' | 'laptop' | 'appliance') => {
     switch (preset) {
       case 'phone':
         setInputs(prev => ({ ...prev, purchasePrice: 80000, upfrontDiscountAmount: 4000, emiTenureMonths: 6, processingFee: 199 }));
@@ -24,8 +24,8 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
       case 'laptop':
         setInputs(prev => ({ ...prev, purchasePrice: 150000, upfrontDiscountAmount: 10000, emiTenureMonths: 9, processingFee: 499 }));
         break;
-      case 'car':
-        setInputs(prev => ({ ...prev, purchasePrice: 1500000, upfrontDiscountAmount: 50000, emiTenureMonths: 60, processingFee: 5000 }));
+      case 'appliance':
+        setInputs(prev => ({ ...prev, purchasePrice: 300000, upfrontDiscountAmount: 18000, emiTenureMonths: 12, processingFee: 999 }));
         break;
     }
   };
@@ -35,9 +35,9 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
       {/* Presets */}
       <div className="flex gap-2 mb-5 flex-shrink-0 overflow-x-auto pb-1 scrollbar-none">
         {[
-          { key: 'phone' as const, label: 'Phone', icon: Smartphone },
-          { key: 'laptop' as const, label: 'Laptop', icon: Laptop },
-          { key: 'car' as const, label: 'Car Loan', icon: CarFront },
+          { key: 'phone' as const, label: 'Phone (₹80k)', icon: Smartphone },
+          { key: 'laptop' as const, label: 'Laptop (₹1.5L)', icon: Laptop },
+          { key: 'appliance' as const, label: 'Appliance (₹3L)', icon: ShoppingCart },
         ].map(p => {
           const Icon = p.icon;
           return (
@@ -59,7 +59,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
         <div className="space-y-1">
           <CompactSlider label="Purchase Price" name="purchasePrice" min={10000} max={3000000} step={5000} inputType="currency" icon={<ShoppingCart size={13} />} value={inputs.purchasePrice} onChange={handleChange} accent="indigo" />
           <CompactSlider label="Upfront Discount" name="upfrontDiscountAmount" min={0} max={200000} step={500} inputType="currency" icon={<Banknote size={13} />} value={inputs.upfrontDiscountAmount} onChange={handleChange} accent="indigo" />
-          <CompactSlider label="EMI Tenure (Months)" name="emiTenureMonths" min={3} max={84} step={3} inputType="years" icon={<Clock size={13} />} value={inputs.emiTenureMonths} onChange={handleChange} accent="indigo" />
+          <CompactSlider label="EMI Tenure (Months)" name="emiTenureMonths" min={3} max={84} step={3} inputType="months" icon={<Clock size={13} />} value={inputs.emiTenureMonths} onChange={handleChange} accent="indigo" />
         </div>
       </div>
 
@@ -68,7 +68,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
         <div className="space-y-1">
           <CompactSlider label="Bank Interest Rate" name="emiInterestRatePercent" min={8} max={24} step={0.5} inputType="percent" icon={<Percent size={13} />} value={inputs.emiInterestRatePercent} onChange={handleChange} accent="emerald" />
           <CompactSlider label="Processing Fee" name="processingFee" min={0} max={10000} step={99} inputType="currency" icon={<Banknote size={13} />} value={inputs.processingFee} onChange={handleChange} accent="emerald" />
-          <CompactSlider label="Invested Cash CAGR" name="investmentExpectedCagr" min={6} max={20} step={0.5} inputType="percent" icon={<TrendingUp size={13} />} value={inputs.investmentExpectedCagr} onChange={handleChange} accent="emerald" />
+          <CompactSlider label="Expected Investment Return" name="investmentExpectedCagr" min={6} max={20} step={0.5} inputType="percent" icon={<TrendingUp size={13} />} value={inputs.investmentExpectedCagr} onChange={handleChange} accent="emerald" />
         </div>
       </div>
     </div>

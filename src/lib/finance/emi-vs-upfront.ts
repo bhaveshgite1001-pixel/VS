@@ -88,9 +88,41 @@ export function calculateEmiVsUpfront(inputs: EmiVsUpfrontInputs): EmiVsUpfrontR
   const gap = finalUpfront - finalEmi;
 
   let winner: 'upfront' | 'emi' | 'tie' = 'tie';
-  if (Math.abs(gap) > 50) { // Small threshold for ties
+  if (Math.abs(gap) > 50) {
     winner = gap > 0 ? 'upfront' : 'emi';
   }
+
+  // Binary search for Break-even Investment CAGR
+  const findBreakEvenCagr = (): number | null => {
+    let low = 0;
+    let high = 60;
+
+    const calcGapAtCagr = (cagr: number) => {
+      const res = calculateEmiVsUpfrontInternal({ ...inputs, investmentExpectedCagr: cagr });
+      return res.finalUpfront - res.finalEmi;
+    };
+
+    const lowGap = calcGapAtCagr(low);
+    const highGap = calcGapAtCagr(high);
+
+    if ((lowGap >= 0 && highGap >= 0) || (lowGap <= 0 && highGap <= 0)) {
+      return null;
+    }
+
+    for (let i = 0; i < 20; i++) {
+      const mid = (low + high) / 2;
+      const g = calcGapAtCagr(mid);
+      if (Math.abs(g) < 50) {
+        return Math.round(mid * 10) / 10;
+      }
+      if (g > 0) {
+        low = mid; // Upfront wins, need higher investment return to make EMI win
+      } else {
+        high = mid; // EMI wins, need lower investment return to tie
+      }
+    }
+    return Math.round(((low + high) / 2) * 10) / 10;
+  };
 
   return {
     monthlyData,
@@ -99,5 +131,54 @@ export function calculateEmiVsUpfront(inputs: EmiVsUpfrontInputs): EmiVsUpfrontR
     totalHiddenCosts,
     netWealthGapAtEnd: gap,
     winner,
+    sensitivity: {
+      breakEvenInvestmentCagr: findBreakEvenCagr(),
+    }
   };
+}
+
+// Internal simulation helper to avoid recursion
+function calculateEmiVsUpfrontInternal(inputs: EmiVsUpfrontInputs) {
+  const {
+    purchasePrice, upfrontDiscountAmount, emiTenureMonths,
+    emiInterestRatePercent, processingFee, gstOnInterestPercent, investmentExpectedCagr
+  } = inputs;
+
+  const rInv = investmentExpectedCagr / 100 / 12;
+  const rEmi = emiInterestRatePercent / 100 / 12;
+  const gstRate = gstOnInterestPercent / 100;
+
+  let upfrontCorpus = upfrontDiscountAmount; 
+  let emiCorpus = purchasePrice - processingFee;
+  const emiAmount = purchasePrice / emiTenureMonths;
+
+  let impliedPrincipal = 0;
+  if (rEmi > 0) {
+    impliedPrincipal = emiAmount * (1 - Math.pow(1 + rEmi, -emiTenureMonths)) / rEmi;
+  } else {
+    impliedPrincipal = purchasePrice;
+  }
+
+  let totalHiddenCosts = processingFee;
+  let currentLoanBalance = impliedPrincipal;
+
+  for (let m = 1; m <= emiTenureMonths; m++) {
+    upfrontCorpus = upfrontCorpus * (1 + rInv);
+
+    let interestComponent = 0;
+    if (currentLoanBalance > 0 && rEmi > 0) {
+      interestComponent = currentLoanBalance * rEmi;
+    }
+    
+    const principalComponent = emiAmount - interestComponent;
+    currentLoanBalance -= principalComponent;
+
+    const gst = interestComponent * gstRate;
+    totalHiddenCosts += gst;
+    const totalOutflow = emiAmount + gst;
+
+    emiCorpus = emiCorpus * (1 + rInv) - totalOutflow;
+  }
+
+  return { finalUpfront: upfrontCorpus, finalEmi: emiCorpus };
 }
