@@ -1,26 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0f;
+  --surface: rgba(255, 255, 255, 0.05); /* ~5% white overlay */
+  --surface-hover: rgba(255, 255, 255, 0.08); /* ~8% white overlay */
+  --foreground: #fafafa;
+  --accent-buyer: #6366f1; /* Indigo */
+  --accent-renter: #34d399; /* Emerald */
+  --accent-tie: #9ca3af; /* Gray */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: 'Inter', var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', var(--font-geist-mono), monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 999px; }
+
+/* ─── Base Card & Surface Components ─── */
+.card {
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 16px;
+}
+
+.pill-btn {
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.2s ease;
+}
+
+.rounded-control {
+  border-radius: 999px;
+}
+
+/* ─── Animations ─── */
+@keyframes gradient-mesh {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-mesh { background-size: 200% 200%; animation: gradient-mesh 8s ease infinite; }
+
+/* ─── Range Slider Reset (We use custom Framer Motion sliders now or heavily styled inputs) ─── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: transparent; /* Track handled by React */
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #fff;
+  border: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  cursor: grab;
+  /* Scale transitions handled by Framer Motion / React */
+}
+input[type="range"]::-webkit-slider-thumb:active { cursor: grabbing; }
+
+input[type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #fff;
+  border: none;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  cursor: grab;
 }
