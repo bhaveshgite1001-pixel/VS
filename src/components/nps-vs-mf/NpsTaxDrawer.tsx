@@ -76,9 +76,9 @@ export const NpsTaxDrawer: React.FC<NpsTaxDrawerProps> = ({ inputs, result }) =>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
               <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
-                <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Sec 80CCD(2) Rule</span>
+                <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Sec 80CCD(2) Rule (14% New Tax Regime)</span>
                 <p className="text-[11px] text-white/60">
-                  Employer contributions up to 10% of basic salary are 100% tax-exempt over and above the ₹1.5L limit of Sec 80C.
+                  Employer contributions up to 14% of basic salary are 100% tax-deductible under the New Tax Regime (up to 10% under Old Tax Regime), completely separate from Sec 80C.
                 </p>
               </div>
               <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">

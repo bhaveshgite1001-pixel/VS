@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { Scale } from 'lucide-react';
 
 export function Header({ subtitle }: { subtitle: string }) {
@@ -18,6 +17,14 @@ export function Header({ subtitle }: { subtitle: string }) {
           </h1>
           <p className="text-[9px] text-white/25 font-medium leading-none mt-0.5">{subtitle}</p>
         </div>
+      </Link>
+      
+      <Link 
+        href="/" 
+        className="flex items-center gap-1.5 text-[11px] font-mono text-white/30 hover:text-white/80 transition-colors px-2 py-1 rounded-lg hover:bg-white/[0.03]"
+      >
+        <span>←</span>
+        <span>All Decision Engines</span>
       </Link>
     </header>
   );
