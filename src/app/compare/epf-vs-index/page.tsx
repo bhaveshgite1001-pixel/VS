@@ -5,6 +5,7 @@ import { EpfVsIndexInputs } from '@/lib/types/finance';
 import { calculateEpfVsIndex } from '@/lib/finance/epf-vs-index';
 import { VerdictBar } from '@/components/epf-vs-index/VerdictBar';
 import { ControlPanel } from '@/components/epf-vs-index/ControlPanel';
+import { EpfMethodologyDrawer } from '@/components/epf-vs-index/EpfMethodologyDrawer';
 import { ComparisonChart } from '@/components/ui/ComparisonChart';
 import { Header } from '@/components/ui/Header';
 import { formatINR } from '@/lib/utils/formatters';
@@ -13,7 +14,7 @@ const defaultInputs: EpfVsIndexInputs = {
   monthlyBasicSalary: 120000,
   vpfContributionPercent: 18,
   taxBracketPercent: 30,
-  epfInterestRate: 8.1,
+  epfInterestRate: 8.25,
   indexFundExpectedCagr: 12.0,
   investmentHorizonYears: 20,
 };
@@ -59,6 +60,9 @@ export default function EpfVsIndexPage() {
               xAxisLabelPrefix="Year "
             />
           </div>
+
+          {/* Model Assumptions & Methodology Drawer */}
+          <EpfMethodologyDrawer inputs={inputs} result={result} />
         </div>
       </div>
     </div>

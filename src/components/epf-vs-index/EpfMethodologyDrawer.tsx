@@ -2,20 +2,20 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HelpCircle, ChevronDown, Check, ShieldAlert, Home, TrendingUp, Info } from 'lucide-react';
-import { RentVsBuyInputs } from '@/lib/types/finance';
+import { HelpCircle, ChevronDown, Check, ShieldAlert, Landmark, TrendingUp, Info } from 'lucide-react';
+import { EpfVsIndexInputs, EpfVsIndexResult } from '@/lib/types/finance';
 import { formatINR } from '@/lib/utils/formatters';
 
-interface AssumptionsDrawerProps {
-  inputs: RentVsBuyInputs;
+interface EpfMethodologyDrawerProps {
+  inputs: EpfVsIndexInputs;
+  result: EpfVsIndexResult;
 }
 
-export const AssumptionsDrawer: React.FC<AssumptionsDrawerProps> = ({ inputs }) => {
+export const EpfMethodologyDrawer: React.FC<EpfMethodologyDrawerProps> = ({ inputs, result }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const downPaymentAmt = inputs.propertyValue * (inputs.downPaymentPercent / 100);
-  const stampDutyAmt = inputs.propertyValue * (inputs.stampDutyPercent / 100);
-  const totalUpfrontCost = downPaymentAmt + stampDutyAmt;
+  const monthlyContribution = inputs.monthlyBasicSalary * (inputs.vpfContributionPercent / 100);
+  const annualContribution = monthlyContribution * 12;
 
   return (
     <div className="bg-zinc-950/40 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
@@ -33,7 +33,7 @@ export const AssumptionsDrawer: React.FC<AssumptionsDrawerProps> = ({ inputs }) 
               How This Result Is Calculated
             </h4>
             <p className="text-[10px] text-white/40 truncate mt-0.5">
-              Assumptions, cash flows & costs
+              Assumptions, EPF tax threshold & compounding rules
             </p>
           </div>
         </div>
@@ -56,38 +56,38 @@ export const AssumptionsDrawer: React.FC<AssumptionsDrawerProps> = ({ inputs }) 
           >
             {/* SCANNING 1-2-3 STRATEGY STEPS */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {/* BUY STEPS */}
+              {/* EPF/VPF STEPS */}
               <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
                 <h5 className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Home size={13} /> BUY STRATEGY
+                  <Landmark size={13} /> MAX EPF/VPF STRATEGY
                 </h5>
                 <div className="space-y-1.5 text-[11px] text-white/70">
                   <p>
-                    <span className="font-mono text-indigo-400 font-bold">1. Upfront:</span> Down payment ({formatINR(downPaymentAmt)}) + Stamp duty ({formatINR(stampDutyAmt)}).
+                    <span className="font-mono text-indigo-400 font-bold">1. Contribution:</span> {inputs.vpfContributionPercent}% of basic salary ({formatINR(monthlyContribution)}/mo).
                   </p>
                   <p>
-                    <span className="font-mono text-indigo-400 font-bold">2. Monthly:</span> EMI + Maintenance outlays.
+                    <span className="font-mono text-indigo-400 font-bold">2. Interest:</span> Guaranteed {inputs.epfInterestRate}% compounding per year.
                   </p>
                   <p>
-                    <span className="font-mono text-indigo-400 font-bold">3. Wealth:</span> Property market value minus remaining loan balance.
+                    <span className="font-mono text-indigo-400 font-bold">3. Tax Threshold:</span> Interest on annual contribution above ₹2.5L is taxed at {inputs.taxBracketPercent}%.
                   </p>
                 </div>
               </div>
 
-              {/* RENT STEPS */}
+              {/* INDEX FUND STEPS */}
               <div className="p-3.5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
                 <h5 className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <TrendingUp size={13} /> RENT + INVEST STRATEGY
+                  <TrendingUp size={13} /> INDEX FUND STRATEGY
                 </h5>
                 <div className="space-y-1.5 text-[11px] text-white/70">
                   <p>
-                    <span className="font-mono text-emerald-400 font-bold">1. Upfront:</span> Same capital ({formatINR(totalUpfrontCost)}) invested into equity on Day 1.
+                    <span className="font-mono text-emerald-400 font-bold">1. Contribution:</span> Same monthly outlay ({formatINR(monthlyContribution)}/mo) into index funds.
                   </p>
                   <p>
-                    <span className="font-mono text-emerald-400 font-bold">2. Monthly:</span> Monthly cash-flow savings <code>(EMI + Maintenance − Rent)</code> invested in equity.
+                    <span className="font-mono text-emerald-400 font-bold">2. Return:</span> Equity market return compounding at {inputs.indexFundExpectedCagr}% CAGR.
                   </p>
                   <p>
-                    <span className="font-mono text-emerald-400 font-bold">3. Wealth:</span> Equity portfolio compounding at {inputs.equityCagr}% CAGR.
+                    <span className="font-mono text-emerald-400 font-bold">3. Wealth:</span> Final portfolio minus 12.5% LTCG tax on capital gains.
                   </p>
                 </div>
               </div>
@@ -96,7 +96,7 @@ export const AssumptionsDrawer: React.FC<AssumptionsDrawerProps> = ({ inputs }) 
             {/* FAIRNESS COMPARISON RULE */}
             <div className="p-3 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-[11px] text-indigo-200">
               <span className="font-bold uppercase tracking-wider block text-[10px] text-indigo-300 mb-0.5">COMPARISON RULE</span>
-              Both scenarios start with the exact same available capital ({formatINR(totalUpfrontCost)}) and are evaluated over the exact same {inputs.comparisonHorizonYears}-year horizon.
+              Both strategies invest the exact same monthly contribution ({formatINR(monthlyContribution)}/mo) over the exact same {inputs.investmentHorizonYears}-year horizon.
             </div>
 
             {/* INCLUDED VS EXCLUDED LIST */}
@@ -104,32 +104,21 @@ export const AssumptionsDrawer: React.FC<AssumptionsDrawerProps> = ({ inputs }) 
               <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
                 <span className="font-bold text-emerald-400 uppercase tracking-wider text-[10px]">INCLUDED</span>
                 <ul className="space-y-0.5 text-white/60">
-                  <li>• Stamp duty & registration fees</li>
-                  <li>• Property maintenance costs</li>
-                  <li>• Annual rent escalation</li>
-                  <li>• Loan interest compounding</li>
-                  <li>• Equity SIP reinvestment</li>
+                  <li>• Guaranteed EPF 8.25% interest rate</li>
+                  <li>• ₹2.5L annual VPF contribution tax-free cap</li>
+                  <li>• Tax at {inputs.taxBracketPercent}% on VPF interest above ₹2.5L</li>
+                  <li>• 12.5% LTCG tax on index fund gains</li>
                 </ul>
               </div>
 
               <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
                 <span className="font-bold text-amber-400 uppercase tracking-wider text-[10px]">EXCLUDED</span>
                 <ul className="space-y-0.5 text-white/60">
-                  <li>• Section 24(b) home loan tax deduction</li>
-                  <li>• Personal tax slab variations</li>
-                  <li>• LTCG tax at property resale</li>
+                  <li>• Employer EPF 12% mandatory match (equal on both sides)</li>
+                  <li>• Sec 80C initial tax deduction</li>
+                  <li>• Emergency loan withdrawal options</li>
                 </ul>
               </div>
-            </div>
-
-            {/* WHY OPPORTUNITY COST MATTERS NOTE */}
-            <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 text-[10px] text-white/50 space-y-1">
-              <span className="font-bold text-white/80 uppercase tracking-wider flex items-center gap-1">
-                <Info size={12} className="text-indigo-400" /> WHY OPPORTUNITY COST MATTERS
-              </span>
-              <p className="leading-relaxed">
-                Buying ties up your upfront capital and monthly cash flow in physical real estate. Renting frees that capital to compound elsewhere. We compare both paths over the exact same time horizon.
-              </p>
             </div>
           </motion.div>
         )}
