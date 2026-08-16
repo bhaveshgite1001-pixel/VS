@@ -37,7 +37,8 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
         <h4 className="text-[10px] font-semibold text-white/30 uppercase tracking-[0.15em] mb-2">Purchase Details</h4>
         <div className="space-y-1">
           <CompactSlider label="Purchase Price" name="purchasePrice" min={10000} max={3000000} step={5000} inputType="currency" icon={<ShoppingCart size={13} />} value={inputs.purchasePrice} onChange={handleChange} accent="indigo" />
-          <CompactSlider label="Upfront Discount" name="upfrontDiscountAmount" min={0} max={200000} step={500} inputType="currency" icon={<Banknote size={13} />} value={inputs.upfrontDiscountAmount} onChange={handleChange} accent="indigo" />
+          <CompactSlider label="Upfront Cash Discount" name="upfrontDiscountAmount" min={0} max={200000} step={500} inputType="currency" icon={<Banknote size={13} />} value={inputs.upfrontDiscountAmount} onChange={handleChange} accent="indigo" />
+          <CompactSlider label="Card EMI Cashback / Discount" name="emiCashbackAmount" min={0} max={200000} step={500} inputType="currency" icon={<Banknote size={13} />} value={inputs.emiCashbackAmount || 0} onChange={handleChange} accent="emerald" />
           <CompactSlider label="EMI Tenure (Months)" name="emiTenureMonths" min={3} max={84} step={3} inputType="months" icon={<Clock size={13} />} value={inputs.emiTenureMonths} onChange={handleChange} accent="indigo" />
         </div>
       </div>

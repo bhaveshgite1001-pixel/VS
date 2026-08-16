@@ -153,6 +153,7 @@ export interface EpfVsIndexResult {
 export interface EmiVsUpfrontInputs {
   purchasePrice: number;
   upfrontDiscountAmount: number;
+  emiCashbackAmount?: number;
   emiTenureMonths: number;
   emiInterestRatePercent: number; // e.g., 15% used by bank to calculate GST
   processingFee: number;

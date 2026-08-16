@@ -4,6 +4,7 @@ export function calculateEmiVsUpfront(inputs: EmiVsUpfrontInputs): EmiVsUpfrontR
   const {
     purchasePrice,
     upfrontDiscountAmount,
+    emiCashbackAmount = 0,
     emiTenureMonths,
     emiInterestRatePercent,
     processingFee,
@@ -21,12 +22,12 @@ export function calculateEmiVsUpfront(inputs: EmiVsUpfrontInputs): EmiVsUpfrontR
   let upfrontCorpus = upfrontDiscountAmount; 
 
   // SCENARIO B: No-Cost EMI
-  // User starts with 'purchasePrice' in bank.
-  // Pays processing fee on day 1.
+  // Effective price financed after EMI Cashback / Card Discount
+  const financedPrice = Math.max(0, purchasePrice - emiCashbackAmount);
   let emiCorpus = purchasePrice - processingFee;
 
-  // The EMI amount is strictly PurchasePrice / Tenure
-  const emiAmount = purchasePrice / emiTenureMonths;
+  // The EMI amount is strictly FinancedPrice / Tenure
+  const emiAmount = financedPrice / emiTenureMonths;
 
   // To find the interest component for GST, we need the implied loan principal.
   // P = EMI * [1 - (1+r)^-n] / r
@@ -34,7 +35,7 @@ export function calculateEmiVsUpfront(inputs: EmiVsUpfrontInputs): EmiVsUpfrontR
   if (rEmi > 0) {
     impliedPrincipal = emiAmount * (1 - Math.pow(1 + rEmi, -emiTenureMonths)) / rEmi;
   } else {
-    impliedPrincipal = purchasePrice;
+    impliedPrincipal = financedPrice;
   }
 
   const monthlyData: EmiMonthData[] = [];
@@ -140,7 +141,7 @@ export function calculateEmiVsUpfront(inputs: EmiVsUpfrontInputs): EmiVsUpfrontR
 // Internal simulation helper to avoid recursion
 function calculateEmiVsUpfrontInternal(inputs: EmiVsUpfrontInputs) {
   const {
-    purchasePrice, upfrontDiscountAmount, emiTenureMonths,
+    purchasePrice, upfrontDiscountAmount, emiCashbackAmount = 0, emiTenureMonths,
     emiInterestRatePercent, processingFee, gstOnInterestPercent, investmentExpectedCagr
   } = inputs;
 
@@ -149,14 +150,15 @@ function calculateEmiVsUpfrontInternal(inputs: EmiVsUpfrontInputs) {
   const gstRate = gstOnInterestPercent / 100;
 
   let upfrontCorpus = upfrontDiscountAmount; 
+  const financedPrice = Math.max(0, purchasePrice - emiCashbackAmount);
   let emiCorpus = purchasePrice - processingFee;
-  const emiAmount = purchasePrice / emiTenureMonths;
+  const emiAmount = financedPrice / emiTenureMonths;
 
   let impliedPrincipal = 0;
   if (rEmi > 0) {
     impliedPrincipal = emiAmount * (1 - Math.pow(1 + rEmi, -emiTenureMonths)) / rEmi;
   } else {
-    impliedPrincipal = purchasePrice;
+    impliedPrincipal = financedPrice;
   }
 
   let totalHiddenCosts = processingFee;

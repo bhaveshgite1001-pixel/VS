@@ -35,11 +35,11 @@ export const WhyUpfrontWins: React.FC<WhyUpfrontWinsProps> = ({ result, inputs }
         <p className="text-xs md:text-sm text-white/80 leading-relaxed">
           {isUpfrontWinner ? (
             <>
-              Paying upfront wins because the <span className="text-indigo-400 font-semibold">{formatINR(inputs.upfrontDiscountAmount)} upfront discount</span> + <span className="text-indigo-300 font-semibold">{formatINR(inputs.processingFee)} processing fee saved</span> outweighs the investment growth of retaining cash over {inputs.emiTenureMonths} months at your assumed <span className="text-emerald-400 font-semibold">{inputs.investmentExpectedCagr}% CAGR</span>.
+              Paying upfront wins because the <span className="text-indigo-400 font-semibold">{formatINR(inputs.upfrontDiscountAmount)} upfront discount</span> + <span className="text-indigo-300 font-semibold">{formatINR(inputs.processingFee)} fee saved</span> outweighs the net returns of retaining cash over {inputs.emiTenureMonths} months at <span className="text-emerald-400 font-semibold">{inputs.investmentExpectedCagr}% CAGR</span>{inputs.emiCashbackAmount ? ` (after subtracting ${formatINR(inputs.emiCashbackAmount)} card EMI cashback)` : ''}.
             </>
           ) : (
             <>
-              No-Cost EMI wins because keeping <span className="text-emerald-400 font-semibold">{formatINR(inputs.purchasePrice)}</span> invested at <span className="text-emerald-300 font-semibold">{inputs.investmentExpectedCagr}% CAGR</span> generates more wealth than the upfront discount + fee costs.
+              No-Cost EMI wins because keeping <span className="text-emerald-400 font-semibold">{formatINR(inputs.purchasePrice)}</span> invested at <span className="text-emerald-300 font-semibold">{inputs.investmentExpectedCagr}% CAGR</span>{inputs.emiCashbackAmount ? ` + getting ${formatINR(inputs.emiCashbackAmount)} card EMI cashback` : ''} generates more wealth than the upfront discount + fee costs.
             </>
           )}
         </p>
