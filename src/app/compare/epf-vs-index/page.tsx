@@ -13,7 +13,7 @@ import { formatINR } from '@/lib/utils/formatters';
 import { EpfSensitivity } from '@/components/epf-vs-index/EpfSensitivity';
 
 import { ScenarioWorkspace } from '@/components/ui/ScenarioWorkspace';
-import { deserializeInputsFromUrl } from '@/lib/utils/scenarioState';
+import { useScenarioInputs } from '@/lib/utils/scenarioState';
 
 const defaultInputs: EpfVsIndexInputs = {
   monthlyBasicSalary: 120000,
@@ -25,13 +25,7 @@ const defaultInputs: EpfVsIndexInputs = {
 };
 
 export default function EpfVsIndexPage() {
-  const [inputs, setInputs] = useState<EpfVsIndexInputs>(defaultInputs);
-
-  React.useEffect(() => {
-    const hydrated = deserializeInputsFromUrl<EpfVsIndexInputs>(defaultInputs);
-    setInputs(hydrated);
-  }, []);
-
+  const [inputs, setInputs] = useScenarioInputs<EpfVsIndexInputs>(defaultInputs);
   const result = useMemo(() => calculateEpfVsIndex(inputs), [inputs]);
 
   return (

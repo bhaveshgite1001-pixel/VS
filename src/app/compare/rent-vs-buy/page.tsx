@@ -12,7 +12,7 @@ import { ComparisonChart } from '@/components/ui/ComparisonChart';
 import { Header } from '@/components/ui/Header';
 
 import { ScenarioWorkspace } from '@/components/ui/ScenarioWorkspace';
-import { deserializeInputsFromUrl } from '@/lib/utils/scenarioState';
+import { useScenarioInputs } from '@/lib/utils/scenarioState';
 
 const defaultInputs: RentVsBuyInputs = {
   propertyValue: 12000000,
@@ -29,14 +29,7 @@ const defaultInputs: RentVsBuyInputs = {
 };
 
 export default function RentVsBuyPage() {
-  const [inputs, setInputs] = useState<RentVsBuyInputs>(defaultInputs);
-
-  // Hydrate from URL query parameters on mount
-  React.useEffect(() => {
-    const hydrated = deserializeInputsFromUrl<RentVsBuyInputs>(defaultInputs);
-    setInputs(hydrated);
-  }, []);
-
+  const [inputs, setInputs] = useScenarioInputs<RentVsBuyInputs>(defaultInputs);
   const result = useMemo(() => calculateRentVsBuy(inputs), [inputs]);
 
   const emi = useMemo(() => {

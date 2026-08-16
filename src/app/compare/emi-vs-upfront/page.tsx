@@ -13,7 +13,7 @@ import { Header } from '@/components/ui/Header';
 import { formatINR } from '@/lib/utils/formatters';
 
 import { ScenarioWorkspace } from '@/components/ui/ScenarioWorkspace';
-import { deserializeInputsFromUrl } from '@/lib/utils/scenarioState';
+import { useScenarioInputs } from '@/lib/utils/scenarioState';
 
 const defaultInputs: EmiVsUpfrontInputs = {
   purchasePrice: 150000,
@@ -26,13 +26,7 @@ const defaultInputs: EmiVsUpfrontInputs = {
 };
 
 export default function EmiVsUpfrontPage() {
-  const [inputs, setInputs] = useState<EmiVsUpfrontInputs>(defaultInputs);
-
-  React.useEffect(() => {
-    const hydrated = deserializeInputsFromUrl<EmiVsUpfrontInputs>(defaultInputs);
-    setInputs(hydrated);
-  }, []);
-
+  const [inputs, setInputs] = useScenarioInputs<EmiVsUpfrontInputs>(defaultInputs);
   const result = useMemo(() => calculateEmiVsUpfront(inputs), [inputs]);
 
   return (

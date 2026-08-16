@@ -13,7 +13,7 @@ import { Header } from '@/components/ui/Header';
 import { formatINR } from '@/lib/utils/formatters';
 
 import { ScenarioWorkspace } from '@/components/ui/ScenarioWorkspace';
-import { deserializeInputsFromUrl } from '@/lib/utils/scenarioState';
+import { useScenarioInputs } from '@/lib/utils/scenarioState';
 
 const defaultInputs: PrepayVsInvestInputs = {
   outstandingLoanBalance: 8000000,
@@ -26,13 +26,7 @@ const defaultInputs: PrepayVsInvestInputs = {
 };
 
 export default function PrepayVsInvestPage() {
-  const [inputs, setInputs] = useState<PrepayVsInvestInputs>(defaultInputs);
-
-  React.useEffect(() => {
-    const hydrated = deserializeInputsFromUrl<PrepayVsInvestInputs>(defaultInputs);
-    setInputs(hydrated);
-  }, []);
-
+  const [inputs, setInputs] = useScenarioInputs<PrepayVsInvestInputs>(defaultInputs);
   const result = useMemo(() => calculatePrepayVsInvest(inputs), [inputs]);
 
   return (

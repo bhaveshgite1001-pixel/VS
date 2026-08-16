@@ -13,7 +13,7 @@ import { Header } from '@/components/ui/Header';
 import { formatINR } from '@/lib/utils/formatters';
 
 import { ScenarioWorkspace } from '@/components/ui/ScenarioWorkspace';
-import { deserializeInputsFromUrl } from '@/lib/utils/scenarioState';
+import { useScenarioInputs } from '@/lib/utils/scenarioState';
 
 const defaultInputs: NpsVsMfInputs = {
   basicSalary: 1500000,
@@ -25,13 +25,7 @@ const defaultInputs: NpsVsMfInputs = {
 };
 
 export default function NpsVsMfPage() {
-  const [inputs, setInputs] = useState<NpsVsMfInputs>(defaultInputs);
-
-  React.useEffect(() => {
-    const hydrated = deserializeInputsFromUrl<NpsVsMfInputs>(defaultInputs);
-    setInputs(hydrated);
-  }, []);
-
+  const [inputs, setInputs] = useScenarioInputs<NpsVsMfInputs>(defaultInputs);
   const result = useMemo(() => calculateNpsVsMf(inputs), [inputs]);
 
   return (

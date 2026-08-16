@@ -1,15 +1,6 @@
 'use client';
 
-export interface SavedScenario<T = Record<string, any>> {
-  id: string;
-  engineId: string;
-  name: string;
-  notes?: string;
-  createdAt: string;
-  inputs: T;
-}
-
-const STORAGE_KEY = 'dside_saved_scenarios_v1';
+import { useState, useEffect, useRef } from 'react';
 
 // URL Parameter Serialization & Deserialization
 export function serializeInputsToUrl<T extends Record<string, any>>(inputs: T): string {
@@ -32,7 +23,7 @@ export function deserializeInputsFromUrl<T extends Record<string, any>>(defaultI
   Object.keys(defaultInputs).forEach((key) => {
     if (searchParams.has(key)) {
       const rawVal = searchParams.get(key);
-      if (rawVal !== null) {
+      if (rawVal !== null && rawVal !== '') {
         hasMatch = true;
         const defaultVal = defaultInputs[key];
         if (typeof defaultVal === 'number') {
@@ -50,100 +41,34 @@ export function deserializeInputsFromUrl<T extends Record<string, any>>(defaultI
   return hasMatch ? (result as T) : defaultInputs;
 }
 
-// LocalStorage Persistence Helpers
-export function getSavedScenarios<T>(engineId: string): SavedScenario<T>[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const allScenarios: SavedScenario<T>[] = JSON.parse(raw);
-    return allScenarios.filter((s) => s.engineId === engineId);
-  } catch (e) {
-    console.error('Failed to load scenarios from localStorage:', e);
-    return [];
-  }
-}
+// React Custom Hook for Hydrating Inputs from URL and Syncing Changes
+export function useScenarioInputs<T extends Record<string, any>>(defaultInputs: T): [T, React.Dispatch<React.SetStateAction<T>>] {
+  const [inputs, setInputs] = useState<T>(defaultInputs);
+  const [isMounted, setIsMounted] = useState(false);
+  const isFirstSync = useRef(true);
 
-export function saveScenario<T>(engineId: string, name: string, inputs: T, notes?: string): SavedScenario<T> {
-  const newScenario: SavedScenario<T> = {
-    id: `${engineId}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-    engineId,
-    name: name.trim() || 'Untitled Scenario',
-    notes: notes?.trim() || '',
-    createdAt: new Date().toISOString(),
-    inputs,
-  };
-
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const existing: SavedScenario<any>[] = raw ? JSON.parse(raw) : [];
-    const updated = [newScenario, ...existing];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-  } catch (e) {
-    console.error('Failed to save scenario to localStorage:', e);
-  }
-
-  return newScenario;
-}
-
-export function deleteScenario(id: string): void {
-  if (typeof window === 'undefined') return;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const existing: SavedScenario<any>[] = JSON.parse(raw);
-    const updated = existing.filter((s) => s.id !== id);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-  } catch (e) {
-    console.error('Failed to delete scenario:', e);
-  }
-}
-
-export function duplicateScenario<T>(id: string): SavedScenario<T> | null {
-  if (typeof window === 'undefined') return null;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const existing: SavedScenario<T>[] = JSON.parse(raw);
-    const target = existing.find((s) => s.id === id);
-    if (!target) return null;
-
-    const copy: SavedScenario<T> = {
-      ...target,
-      id: `${target.engineId}_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-      name: `${target.name} (Copy)`,
-      createdAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([copy, ...existing]));
-    return copy;
-  } catch (e) {
-    console.error('Failed to duplicate scenario:', e);
-    return null;
-  }
-}
-
-// Backup Export & Import JSON
-export function exportWorkspaceBackupJson(): string {
-  if (typeof window === 'undefined') return '{}';
-  const raw = localStorage.getItem(STORAGE_KEY) || '[]';
-  return JSON.stringify({
-    version: '1.0',
-    exportedAt: new Date().toISOString(),
-    scenarios: JSON.parse(raw),
-  }, null, 2);
-}
-
-export function importWorkspaceBackupJson(jsonString: string): boolean {
-  if (typeof window === 'undefined') return false;
-  try {
-    const parsed = JSON.parse(jsonString);
-    if (parsed && Array.isArray(parsed.scenarios)) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed.scenarios));
-      return true;
+  // 1. Hydrate from URL after initial mount (prevents SSR hydration mismatch)
+  useEffect(() => {
+    setIsMounted(true);
+    if (typeof window !== 'undefined' && window.location.search) {
+      const hydrated = deserializeInputsFromUrl(defaultInputs);
+      setInputs(hydrated);
     }
-  } catch (e) {
-    console.error('Failed to import scenario JSON:', e);
-  }
-  return false;
+  }, []);
+
+  // 2. Update URL query params when inputs change after mount
+  useEffect(() => {
+    if (!isMounted) return;
+    if (isFirstSync.current) {
+      isFirstSync.current = false;
+      return;
+    }
+    if (typeof window !== 'undefined') {
+      const queryString = serializeInputsToUrl(inputs);
+      const newUrl = `${window.location.pathname}?${queryString}`;
+      window.history.replaceState({ path: newUrl }, '', newUrl);
+    }
+  }, [inputs, isMounted]);
+
+  return [inputs, setInputs];
 }

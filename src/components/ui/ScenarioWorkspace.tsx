@@ -1,29 +1,17 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Share2, Check, Sparkles } from 'lucide-react';
-import { serializeInputsToUrl } from '@/lib/utils/scenarioState';
+import React, { useState } from 'react';
+import { Share2, Check } from 'lucide-react';
 
-interface ScenarioWorkspaceProps<T extends Record<string, any>> {
-  engineId: string;
-  engineTitle: string;
-  currentInputs: T;
-  onApplyScenario?: (inputs: T) => void;
+interface ScenarioWorkspaceProps {
+  engineTitle?: string;
+  engineId?: string;
+  currentInputs?: any;
+  onApplyScenario?: (inputs: any) => void;
 }
 
-export function ScenarioWorkspace<T extends Record<string, any>>({
-  currentInputs,
-}: ScenarioWorkspaceProps<T>) {
+export function ScenarioWorkspace({ engineTitle }: ScenarioWorkspaceProps) {
   const [copiedUrl, setCopiedUrl] = useState(false);
-
-  // Sync current inputs to browser URL search params without page reload
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const queryString = serializeInputsToUrl(currentInputs);
-      const newUrl = `${window.location.pathname}?${queryString}`;
-      window.history.replaceState({ path: newUrl }, '', newUrl);
-    }
-  }, [currentInputs]);
 
   // Copy shareable deep link URL
   const handleShareLink = () => {
@@ -43,7 +31,7 @@ export function ScenarioWorkspace<T extends Record<string, any>>({
         </div>
         <div className="min-w-0">
           <span className="font-mono font-bold text-white uppercase tracking-wider text-[11px] block truncate">
-            Share Exact Model
+            Share Exact Scenario
           </span>
           <span className="text-[10px] text-white/40 font-mono truncate hidden sm:block">
             Every slider update syncs to this shareable URL
