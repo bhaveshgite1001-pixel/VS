@@ -32,27 +32,6 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
 
   return (
     <div className="card p-5 lg:h-full flex flex-col bg-[#0d0d14]/80">
-      {/* Presets */}
-      <div className="flex gap-2 mb-5 flex-shrink-0 overflow-x-auto pb-1 scrollbar-none">
-        {[
-          { key: 'phone' as const, label: 'Phone (₹80k)', icon: Smartphone },
-          { key: 'laptop' as const, label: 'Laptop (₹1.5L)', icon: Laptop },
-          { key: 'appliance' as const, label: 'Appliance (₹3L)', icon: ShoppingCart },
-        ].map(p => {
-          const Icon = p.icon;
-          return (
-            <motion.button
-              key={p.key}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => applyPreset(p.key)}
-              className="flex items-center gap-1.5 px-2 py-1 text-[10px] font-mono uppercase tracking-[0.2em] text-white/30 hover:text-white/80 transition-colors flex-shrink-0 cursor-pointer"
-            >
-               
-              {p.label}
-            </motion.button>
-          );
-        })}
-      </div>
 
       <div className="mb-4">
         <h4 className="text-[10px] font-semibold text-white/30 uppercase tracking-[0.15em] mb-2">Purchase Details</h4>

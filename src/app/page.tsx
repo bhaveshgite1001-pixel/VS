@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Scale, Home, ShieldCheck, Briefcase, ShoppingCart, ArrowRight, Landmark, Compass, Share2, CheckCircle2, Sparkles, TrendingUp, Lock } from 'lucide-react';
+import { BrandLogo } from '@/components/ui/BrandLogo';
 
 const flagshipTool = {
   id: 'rent-vs-buy',
@@ -76,16 +77,12 @@ export default function LandingPage() {
 
       {/* Navigation Header */}
       <header className="relative z-10 p-6 md:p-8 flex justify-between items-center max-w-7xl mx-auto w-full">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-xl">
-            <Scale size={22} className="text-indigo-400" />
-          </div>
-          <div>
-            <h1 className="text-xl md:text-2xl font-black tracking-tight leading-none">
-              Financial <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">VS</span>
-            </h1>
-            <p className="text-[10px] text-white/30 font-mono tracking-wider mt-0.5">DECISION ENGINES FOR INDIA</p>
-          </div>
+        <BrandLogo size="md" showTagline />
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>5 Decision Engines Live</span>
+          </span>
         </div>
       </header>
 

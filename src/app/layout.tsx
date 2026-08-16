@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Financial VS | Decision Engine",
-    template: "%s | Financial VS"
+    default: "Dside Money — Financial Decision Engines for India",
+    template: "%s | Dside Money"
   },
-  description: "A high-precision, interactive decision engine to resolve classic personal finance dilemmas.",
+  description: "Stop guessing. Start calculating. High-precision interactive decision engines to model India's biggest financial decisions with pure math.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

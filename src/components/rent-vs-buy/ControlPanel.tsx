@@ -52,27 +52,6 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
 
   return (
     <div className="card p-5 lg:h-full flex flex-col bg-[#0d0d14]/80">
-      {/* Presets */}
-      <div className="flex gap-2 mb-4 flex-shrink-0 overflow-x-auto pb-1 scrollbar-none">
-        {[
-          { key: 'tier1' as const, label: 'Metro ₹1.5Cr', icon: MapPin },
-          { key: 'starter' as const, label: 'Starter ₹60L', icon: Home },
-          { key: 'high_growth' as const, label: 'High Growth', icon: Flame },
-        ].map(p => {
-          const Icon = p.icon;
-          return (
-            <motion.button
-              key={p.key}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => applyPreset(p.key)}
-              className="flex items-center gap-1.5 px-2 py-1 text-[10px] font-mono uppercase tracking-[0.2em] text-white/30 hover:text-white/80 transition-colors flex-shrink-0 cursor-pointer"
-            >
-               
-              {p.label}
-            </motion.button>
-          );
-        })}
-      </div>
 
       {/* Tabs */}
       <div className="relative flex mb-5 flex-shrink-0 bg-white/[0.03] p-1 rounded-2xl">
