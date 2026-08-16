@@ -12,42 +12,34 @@ export function calculateNpsVsMf(inputs: NpsVsMfInputs): NpsVsMfResult {
 
   const annualMatch = basicSalary * (employerMatchPercent / 100);
   const taxSaved = annualMatch * (taxBracketPercent / 100);
-  const mfInvestmentIfNoNps = annualMatch - taxSaved;
+  const netTakeHomeCost = annualMatch - taxSaved; // Take-home impact of both choices = ₹1.05L
 
   const rNps = npsExpectedCagr / 100;
   const rMf = mfExpectedCagr / 100;
 
   let npsCorpus = 0;
-  let sideMfCorpus = 0; // MF built from tax savings
-  let pureMfCorpus = 0; // MF built from skipping NPS
-
+  let pureMfCorpus = 0;
   let pureMfPrincipal = 0;
-  let sideMfPrincipal = 0;
 
   const yearlyData: NpsYearData[] = [];
   let totalTaxSaved = 0;
 
   for (let year = 1; year <= investmentHorizonYears; year++) {
-    // Option A: NPS + Tax Savings Invested
+    // Option A: Corporate NPS (₹1.50L invested pre-tax for ₹1.05L take-home cost)
     npsCorpus = (npsCorpus + annualMatch) * (1 + rNps);
-    sideMfCorpus = (sideMfCorpus + taxSaved) * (1 + rMf);
-    sideMfPrincipal += taxSaved;
     totalTaxSaved += taxSaved;
 
-    // Option B: Pure MF (Skipping NPS)
-    pureMfCorpus = (pureMfCorpus + mfInvestmentIfNoNps) * (1 + rMf);
-    pureMfPrincipal += mfInvestmentIfNoNps;
+    // Option B: Pure Mutual Funds (₹1.05L invested post-tax for ₹1.05L take-home cost)
+    pureMfCorpus = (pureMfCorpus + netTakeHomeCost) * (1 + rMf);
+    pureMfPrincipal += netTakeHomeCost;
 
-    // We apply LTCG of 12.5% on MF for the net worth estimation
-    const sideMfTax = Math.max(0, sideMfCorpus - sideMfPrincipal) * 0.125;
+    // 12.5% LTCG tax deduction on Pure MF gains at horizon
     const pureMfTax = Math.max(0, pureMfCorpus - pureMfPrincipal) * 0.125;
-
-    const netOptionA = npsCorpus + (sideMfCorpus - sideMfTax);
     const netOptionB = pureMfCorpus - pureMfTax;
 
     yearlyData.push({
       year,
-      npsCorpus: netOptionA,
+      npsCorpus,
       mfCorpus: netOptionB,
       totalTaxSaved,
     });
@@ -86,9 +78,9 @@ export function calculateNpsVsMf(inputs: NpsVsMfInputs): NpsVsMfResult {
         return Math.round(mid * 10) / 10;
       }
       if (gap > 0) {
-        low = mid; // NPS wins, need higher MF return to match
+        low = mid;
       } else {
-        high = mid; // MF wins, need lower MF return to tie
+        high = mid;
       }
     }
     return Math.round(((low + high) / 2) * 10) / 10;
@@ -118,9 +110,9 @@ export function calculateNpsVsMf(inputs: NpsVsMfInputs): NpsVsMfResult {
         return Math.round(mid * 10) / 10;
       }
       if (gap > 0) {
-        high = mid; // NPS wins, lower tax bracket could tie
+        high = mid;
       } else {
-        low = mid; // MF wins, higher tax bracket needed for NPS tax savings to overcome return gap
+        low = mid;
       }
     }
     return Math.round(((low + high) / 2) * 10) / 10;
@@ -147,30 +139,24 @@ function calculateNpsVsMfInternal(inputs: NpsVsMfInputs) {
   const { basicSalary, employerMatchPercent, taxBracketPercent, npsExpectedCagr, mfExpectedCagr, investmentHorizonYears } = inputs;
   const annualMatch = basicSalary * (employerMatchPercent / 100);
   const taxSaved = annualMatch * (taxBracketPercent / 100);
-  const mfInvestmentIfNoNps = annualMatch - taxSaved;
+  const netTakeHomeCost = annualMatch - taxSaved;
 
   const rNps = npsExpectedCagr / 100;
   const rMf = mfExpectedCagr / 100;
 
   let npsCorpus = 0;
-  let sideMfCorpus = 0;
   let pureMfCorpus = 0;
   let pureMfPrincipal = 0;
-  let sideMfPrincipal = 0;
 
   for (let year = 1; year <= investmentHorizonYears; year++) {
     npsCorpus = (npsCorpus + annualMatch) * (1 + rNps);
-    sideMfCorpus = (sideMfCorpus + taxSaved) * (1 + rMf);
-    sideMfPrincipal += taxSaved;
-
-    pureMfCorpus = (pureMfCorpus + mfInvestmentIfNoNps) * (1 + rMf);
-    pureMfPrincipal += mfInvestmentIfNoNps;
+    pureMfCorpus = (pureMfCorpus + netTakeHomeCost) * (1 + rMf);
+    pureMfPrincipal += netTakeHomeCost;
   }
 
-  const sideMfTax = Math.max(0, sideMfCorpus - sideMfPrincipal) * 0.125;
   const pureMfTax = Math.max(0, pureMfCorpus - pureMfPrincipal) * 0.125;
 
-  const finalOptionA = npsCorpus + (sideMfCorpus - sideMfTax);
+  const finalOptionA = npsCorpus;
   const finalOptionB = pureMfCorpus - pureMfTax;
 
   return { finalOptionA, finalOptionB };

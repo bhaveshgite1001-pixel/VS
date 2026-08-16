@@ -49,18 +49,18 @@ export const WhyNpsWins: React.FC<WhyNpsWinsProps> = ({ result, inputs }) => {
         <p className="text-xs md:text-sm text-white/80 leading-relaxed">
           {isNpsWinner ? (
             <>
-              Corporate NPS wins because the <span className="text-indigo-400 font-semibold">{inputs.taxBracketPercent}% tax deduction</span> under Sec 80CCD(2) provides an instant <span className="text-indigo-300 font-semibold">{formatINR(annualTaxSaved)}/yr</span> tax saving (reinvested into side equity MFs), which outweighs the <span className="text-emerald-400 font-semibold">{inputs.mfExpectedCagr - inputs.npsExpectedCagr}%</span> return gap.
+              Corporate NPS wins because contributing <span className="text-indigo-400 font-semibold">{formatINR(annualEmployerContribution)}/yr</span> pre-tax only reduces your take-home pay by <span className="text-indigo-300 font-semibold">{formatINR(annualPureMfContribution)}/yr</span> (due to the <span className="text-emerald-400 font-semibold">{inputs.taxBracketPercent}% tax savings</span> under Sec 80CCD(2)). That extra pre-tax compounding power inside NPS outperforms the pure equity MF strategy.
             </>
           ) : (
             <>
-              Pure Mutual Funds win because the <span className="text-emerald-400 font-semibold">{inputs.mfExpectedCagr}% expected return</span> overcomes the upfront tax savings of NPS over your {inputs.investmentHorizonYears}-year horizon.
+              Pure Mutual Funds win because the higher expected equity return (<span className="text-emerald-400 font-semibold">{inputs.mfExpectedCagr}% vs {inputs.npsExpectedCagr}%</span>) on your <span className="text-emerald-300 font-semibold">{formatINR(annualPureMfContribution)}/yr</span> post-tax investment overcomes the upfront tax shield of Corporate NPS over your {inputs.investmentHorizonYears}-year horizon.
             </>
           )}
         </p>
 
-        {/* Annual Contribution Cash-Flow Equivalence Table */}
+        {/* Out-of-Pocket Cash-Flow Equivalence Table */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-white/5 text-xs">
-          <div className="p-3 rounded-xl bg-indigo-500/[0.04] border border-indigo-500/10">
+          <div className="p-3.5 rounded-xl bg-indigo-500/[0.04] border border-indigo-500/10 space-y-1">
             <div className="flex items-center justify-between mb-1">
               <span className="text-[10px] uppercase font-mono tracking-wider text-white/40 flex items-center gap-1">
                 <ShieldCheck size={12} className="text-indigo-400" /> Corporate NPS Strategy
@@ -68,14 +68,14 @@ export const WhyNpsWins: React.FC<WhyNpsWinsProps> = ({ result, inputs }) => {
               <span className="text-[9px] text-amber-400 font-mono flex items-center gap-0.5"><Lock size={9} /> Low Liquidity</span>
             </div>
             <p className="font-mono text-white text-xs">
-              NPS Contribution: <span className="font-bold">{formatINR(annualEmployerContribution)}/yr</span> (Tax treatment modeled separately)
+              NPS Invested Pre-Tax: <span className="font-bold text-indigo-300">{formatINR(annualEmployerContribution)}/yr</span>
             </p>
             <p className="font-mono text-indigo-300 text-[11px] mt-0.5">
-              + Side MF: <span className="font-bold">{formatINR(annualTaxSaved)}/yr</span> (Tax Saved)
+              Net Take-Home Outflow: <span className="font-bold">{formatINR(annualPureMfContribution)}/yr</span> (Tax saved = {formatINR(annualTaxSaved)})
             </p>
           </div>
 
-          <div className="p-3 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/10">
+          <div className="p-3.5 rounded-xl bg-emerald-500/[0.04] border border-emerald-500/10 space-y-1">
             <div className="flex items-center justify-between mb-1">
               <span className="text-[10px] uppercase font-mono tracking-wider text-white/40 flex items-center gap-1">
                 <TrendingUp size={12} className="text-emerald-400" /> Pure Mutual Fund Strategy
@@ -83,10 +83,10 @@ export const WhyNpsWins: React.FC<WhyNpsWinsProps> = ({ result, inputs }) => {
               <span className="text-[9px] text-emerald-400 font-mono flex items-center gap-0.5"><Unlock size={9} /> High Liquidity</span>
             </div>
             <p className="font-mono text-white text-xs">
-              MF: <span className="font-bold">{formatINR(annualPureMfContribution)}/yr</span> (Post-Tax)
+              Pure MF Invested Post-Tax: <span className="font-bold text-emerald-300">{formatINR(annualPureMfContribution)}/yr</span>
             </p>
-            <p className="font-mono text-white/40 text-[11px] mt-0.5">
-              ({formatINR(annualEmployerContribution)} salary − {formatINR(annualTaxSaved)} tax)
+            <p className="font-mono text-white/50 text-[11px] mt-0.5">
+              Net Take-Home Outflow: <span className="font-bold text-white">{formatINR(annualPureMfContribution)}/yr</span> (Same out-of-pocket cost)
             </p>
           </div>
         </div>
