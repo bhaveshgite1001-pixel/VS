@@ -46,7 +46,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
         <h4 className="text-[10px] font-semibold text-white/30 uppercase tracking-[0.15em] mb-2">Market Assumptions</h4>
         <div className="space-y-1">
           <CompactSlider label="EPF Interest Rate" name="epfInterestRate" min={7} max={9} step={0.1} inputType="percent" icon={<Percent size={13} />} value={inputs.epfInterestRate} onChange={handleChange} accent="emerald" />
-          <CompactSlider label="Index Fund CAGR" name="indexFundExpectedCagr" min={8} max={20} step={0.5} inputType="percent" icon={<TrendingUp size={13} />} value={inputs.indexFundExpectedCagr} onChange={handleChange} accent="emerald" />
+          <CompactSlider label="Expected Index Return" name="indexFundExpectedCagr" min={8} max={20} step={0.5} inputType="percent" icon={<TrendingUp size={13} />} value={inputs.indexFundExpectedCagr} onChange={handleChange} accent="emerald" />
           <CompactSlider label="Horizon" name="investmentHorizonYears" min={5} max={40} step={1} inputType="years" icon={<Clock size={13} />} value={inputs.investmentHorizonYears} onChange={handleChange} accent="emerald" />
         </div>
       </div>

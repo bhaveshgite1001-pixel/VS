@@ -10,6 +10,8 @@ import { ComparisonChart } from '@/components/ui/ComparisonChart';
 import { Header } from '@/components/ui/Header';
 import { formatINR } from '@/lib/utils/formatters';
 
+import { EpfSensitivity } from '@/components/epf-vs-index/EpfSensitivity';
+
 const defaultInputs: EpfVsIndexInputs = {
   monthlyBasicSalary: 120000,
   vpfContributionPercent: 18,
@@ -60,6 +62,9 @@ export default function EpfVsIndexPage() {
               xAxisLabelPrefix="Year "
             />
           </div>
+
+          {/* Return Sensitivity Analysis */}
+          <EpfSensitivity result={result} inputs={inputs} />
 
           {/* Model Assumptions & Methodology Drawer */}
           <EpfMethodologyDrawer inputs={inputs} result={result} />

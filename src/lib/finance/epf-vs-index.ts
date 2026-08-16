@@ -1,6 +1,6 @@
 import { EpfVsIndexInputs, EpfVsIndexResult, EpfYearData } from '../types/finance';
 
-export function calculateEpfVsIndex(inputs: EpfVsIndexInputs): EpfVsIndexResult {
+function calculateEpfCore(inputs: EpfVsIndexInputs) {
   const {
     monthlyBasicSalary,
     vpfContributionPercent,
@@ -28,7 +28,6 @@ export function calculateEpfVsIndex(inputs: EpfVsIndexInputs): EpfVsIndexResult 
   let bTaxableBucket = 0;
   let indexCorpusB = 0;
   let indexPrincipalB = 0;
-  let taxPaidB = 0;
 
   const yearlyData: EpfYearData[] = [];
 
@@ -38,7 +37,6 @@ export function calculateEpfVsIndex(inputs: EpfVsIndexInputs): EpfVsIndexResult 
     const tfAddA = Math.min(contribA, 250000);
     const txAddA = Math.max(0, contribA - 250000);
 
-    // Add contribs (simplified mid-year for interest)
     aTaxFreeBucket += tfAddA;
     aTaxableBucket += txAddA;
 
@@ -61,7 +59,6 @@ export function calculateEpfVsIndex(inputs: EpfVsIndexInputs): EpfVsIndexResult 
     const intTfB = bTaxFreeBucket * rEpf;
     const intTxB = bTaxableBucket * rEpf;
     const taxOnIntB = intTxB * taxRate;
-    taxPaidB += taxOnIntB;
 
     bTaxFreeBucket += intTfB;
     bTaxableBucket += (intTxB - taxOnIntB);
@@ -97,8 +94,46 @@ export function calculateEpfVsIndex(inputs: EpfVsIndexInputs): EpfVsIndexResult 
     yearlyData,
     finalEpfCorpus: finalA,
     finalIndexCorpus: finalB,
-    taxPaidOnEpf: taxPaidA, // Only returning the tax paid in Scenario A
+    taxPaidOnEpf: taxPaidA,
     netWealthGapAtHorizon: gap,
     winner,
+  };
+}
+
+export function calculateEpfVsIndex(inputs: EpfVsIndexInputs): EpfVsIndexResult {
+  const base = calculateEpfCore(inputs);
+
+  // Calculate Break-Even Index CAGR where B equals A
+  let breakEvenIndexCagr: number | null = null;
+  let low = 4;
+  let high = 30;
+  for (let i = 0; i < 25; i++) {
+    const mid = (low + high) / 2;
+    const testResult = calculateEpfCore({ ...inputs, indexFundExpectedCagr: mid });
+    if (testResult.finalIndexCorpus >= testResult.finalEpfCorpus) {
+      breakEvenIndexCagr = parseFloat(mid.toFixed(1));
+      high = mid;
+    } else {
+      low = mid;
+    }
+  }
+
+  // Build scenarios for 8%, 10%, 12%, 14%
+  const scenarios = [8, 10, 12, 14].map((cagr) => {
+    const res = calculateEpfCore({ ...inputs, indexFundExpectedCagr: cagr });
+    const diff = Math.abs(res.finalEpfCorpus - res.finalIndexCorpus);
+    return {
+      cagr,
+      differenceAmount: diff,
+      winner: res.winner,
+    };
+  });
+
+  return {
+    ...base,
+    sensitivity: {
+      breakEvenIndexCagr,
+      scenarios,
+    },
   };
 }

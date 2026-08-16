@@ -131,6 +131,15 @@ export interface EpfYearData {
   indexCorpus: number;
 }
 
+export interface EpfVsIndexSensitivity {
+  breakEvenIndexCagr: number | null;
+  scenarios: {
+    cagr: number;
+    differenceAmount: number;
+    winner: 'epf' | 'index' | 'tie';
+  }[];
+}
+
 export interface EpfVsIndexResult {
   yearlyData: EpfYearData[];
   finalEpfCorpus: number;
@@ -138,6 +147,7 @@ export interface EpfVsIndexResult {
   taxPaidOnEpf: number;
   netWealthGapAtHorizon: number;
   winner: 'epf' | 'index' | 'tie';
+  sensitivity: EpfVsIndexSensitivity;
 }
 
 export interface EmiVsUpfrontInputs {

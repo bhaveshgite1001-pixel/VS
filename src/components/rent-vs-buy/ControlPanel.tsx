@@ -101,7 +101,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
             <CompactSlider label="Monthly Rent" name="currentMonthlyRent" min={5000} max={200000} step={2500} inputType="currency" icon={<Home size={13} />} value={inputs.currentMonthlyRent} onChange={handleChange} hint={`Yield: ${derived.rentYieldPercent.toFixed(1)}%`} accent="emerald" />
             <CompactSlider label="Rent Escalation" name="rentEscalationRate" min={3} max={12} step={0.5} inputType="percent" icon={<ArrowUpDown size={13} />} value={inputs.rentEscalationRate} onChange={handleChange} accent="emerald" />
             <CompactSlider label="Property Appr." name="propertyAppreciationRate" min={2} max={15} step={0.5} inputType="percent" icon={<TrendingUp size={13} />} value={inputs.propertyAppreciationRate} onChange={handleChange} accent="emerald" />
-            <CompactSlider label="Equity CAGR" name="equityCagr" min={6} max={18} step={0.5} inputType="percent" icon={<PiggyBank size={13} />} value={inputs.equityCagr} onChange={handleChange} accent="emerald" />
+            <CompactSlider label="Expected Equity Return" name="equityCagr" min={6} max={18} step={0.5} inputType="percent" icon={<PiggyBank size={13} />} value={inputs.equityCagr} onChange={handleChange} accent="emerald" />
             <CompactSlider label="Horizon" name="comparisonHorizonYears" min={5} max={30} step={1} inputType="years" icon={<Calendar size={13} />} value={inputs.comparisonHorizonYears} onChange={handleChange} accent="emerald" />
           </>
         )}

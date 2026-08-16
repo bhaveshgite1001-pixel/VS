@@ -229,7 +229,7 @@ export default function LandingPage() {
         {/* PRODUCT DIFFERENTIATION SECTION */}
         <div className="p-8 rounded-3xl bg-gradient-to-br from-indigo-950/30 to-zinc-950/60 border border-indigo-500/20 backdrop-blur-xl space-y-6">
           <div className="max-w-2xl space-y-2">
-            <span className="text-xs font-mono uppercase tracking-[0.2em] text-indigo-400 font-bold">[ The Financial VS Philosophy ]</span>
+            <span className="text-xs font-mono uppercase tracking-[0.2em] text-indigo-400 font-bold">[ The Dside Philosophy ]</span>
             <h3 className="text-2xl md:text-4xl font-black tracking-tight">
               Don't just see who wins.<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-emerald-300">
@@ -237,7 +237,7 @@ export default function LandingPage() {
               </span>
             </h3>
             <p className="text-xs md:text-sm text-white/60 leading-relaxed">
-              Standard calculators give static outputs based on rigid defaults. Financial VS continuously computes live sensitivity tipping points, telling you exact threshold values (e.g. property appreciation rate, equity return, or tax slab) where the decision reverses.
+              Standard calculators give static outputs based on rigid defaults. Dside continuously computes live sensitivity tipping points, telling you exact threshold values (e.g. property appreciation rate, equity return, or tax slab) where the decision reverses.
             </p>
           </div>
 
@@ -279,7 +279,7 @@ export default function LandingPage() {
         <footer className="pt-10 border-t border-white/5 text-xs text-white/40 space-y-4">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <p className="font-bold text-white/70">Financial VS — Decision Intelligence</p>
+              <p className="font-bold text-white/70">Dside Money — Decision Intelligence</p>
               <p className="text-[10px] text-white/40">Built for Indian professionals. Educational projections, not investment advice.</p>
             </div>
             <div className="flex gap-4 text-[11px] font-mono">

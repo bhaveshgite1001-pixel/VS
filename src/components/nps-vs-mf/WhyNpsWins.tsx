@@ -68,7 +68,7 @@ export const WhyNpsWins: React.FC<WhyNpsWinsProps> = ({ result, inputs }) => {
               <span className="text-[9px] text-amber-400 font-mono flex items-center gap-0.5"><Lock size={9} /> Low Liquidity</span>
             </div>
             <p className="font-mono text-white text-xs">
-              NPS: <span className="font-bold">{formatINR(annualEmployerContribution)}/yr</span> (Tax-Free)
+              NPS Contribution: <span className="font-bold">{formatINR(annualEmployerContribution)}/yr</span> (Tax treatment modeled separately)
             </p>
             <p className="font-mono text-indigo-300 text-[11px] mt-0.5">
               + Side MF: <span className="font-bold">{formatINR(annualTaxSaved)}/yr</span> (Tax Saved)
