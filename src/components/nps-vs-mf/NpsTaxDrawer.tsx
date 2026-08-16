@@ -76,13 +76,13 @@ export const NpsTaxDrawer: React.FC<NpsTaxDrawerProps> = ({ inputs, result }) =>
                 </h5>
                 <div className="space-y-1.5 text-[11px] text-white/70">
                   <p>
-                    <span className="font-mono text-indigo-400 font-bold">1. Upfront:</span> {inputs.employerMatchPercent}% employer match ({formatINR(annualContribution)}/yr) contributed tax-free.
+                    <span className="font-mono text-indigo-400 font-bold">1. Allocation:</span> {inputs.employerMatchPercent}% employer match ({formatINR(annualContribution)}/yr) contributed pre-tax.
                   </p>
                   <p>
-                    <span className="font-mono text-indigo-400 font-bold">2. Side MF:</span> Tax savings ({formatINR(annualTaxSaved)}/yr) invested into side equity mutual fund.
+                    <span className="font-mono text-indigo-400 font-bold">2. Take-Home Cost:</span> Reduces take-home pay by only {formatINR(annualContribution - annualTaxSaved)}/yr due to {inputs.taxBracketPercent}% tax savings.
                   </p>
                   <p>
-                    <span className="font-mono text-indigo-400 font-bold">3. Wealth:</span> NPS corpus compounding at {inputs.npsExpectedCagr}% + Side MF value.
+                    <span className="font-mono text-indigo-400 font-bold">3. Wealth:</span> Full pre-tax corpus compounding at {inputs.npsExpectedCagr}% CAGR.
                   </p>
                 </div>
               </div>
@@ -94,13 +94,13 @@ export const NpsTaxDrawer: React.FC<NpsTaxDrawerProps> = ({ inputs, result }) =>
                 </h5>
                 <div className="space-y-1.5 text-[11px] text-white/70">
                   <p>
-                    <span className="font-mono text-emerald-400 font-bold">1. Cash-Flow:</span> If skipping NPS, salary is received post-tax ({formatINR(annualContribution - annualTaxSaved)}/yr).
+                    <span className="font-mono text-emerald-400 font-bold">1. Allocation:</span> Post-tax take-home amount ({formatINR(annualContribution - annualTaxSaved)}/yr) invested into equity MFs.
                   </p>
                   <p>
-                    <span className="font-mono text-emerald-400 font-bold">2. Monthly:</span> Post-tax amount invested in pure equity mutual funds.
+                    <span className="font-mono text-emerald-400 font-bold">2. Take-Home Cost:</span> Reduces take-home pay by {formatINR(annualContribution - annualTaxSaved)}/yr (Exact same cost).
                   </p>
                   <p>
-                    <span className="font-mono text-emerald-400 font-bold">3. Wealth:</span> MF portfolio compounding at {inputs.mfExpectedCagr}% minus 12.5% LTCG.
+                    <span className="font-mono text-emerald-400 font-bold">3. Wealth:</span> Equity MF portfolio compounding at {inputs.mfExpectedCagr}% minus 12.5% LTCG.
                   </p>
                 </div>
               </div>
@@ -111,8 +111,8 @@ export const NpsTaxDrawer: React.FC<NpsTaxDrawerProps> = ({ inputs, result }) =>
               <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
                 <span className="font-bold text-emerald-400 uppercase tracking-wider text-[10px]">INCLUDED</span>
                 <ul className="space-y-0.5 text-white/60">
-                  <li>• Sec 80CCD(2) employer tax deduction (up to 14% New Tax Regime)</li>
-                  <li>• Side MF compounding of annual tax savings</li>
+                  <li>• Sec 80CCD(2) employer pre-tax deduction (10% Old / 14% New Regime)</li>
+                  <li>• Equal take-home cash outflow comparison ({formatINR(annualContribution - annualTaxSaved)}/yr)</li>
                   <li>• 12.5% LTCG tax deduction on mutual fund gains</li>
                 </ul>
               </div>

@@ -60,9 +60,9 @@ export default function NpsVsMfPage() {
             <ComparisonChart 
               data={result.yearlyData}
               xAxisKey="year"
-              lineA={{ key: 'npsCorpus', label: 'NPS + MF', color: '#6366f1' }}
-              lineB={{ key: 'mfCorpus', label: 'Pure MF', color: '#10b981' }}
-              title="Net Worth Projection (Post Tax)"
+              lineA={{ key: 'npsCorpus', label: 'Corporate NPS', color: '#6366f1' }}
+              lineB={{ key: 'mfCorpus', label: 'Pure Mutual Funds', color: '#10b981' }}
+              title="Net Worth Projection"
               formatYAxis={(v) => {
                 if (Math.abs(v) >= 1e7) return `₹${(v/1e7).toFixed(1)}Cr`;
                 if (Math.abs(v) >= 1e5) return `₹${(v/1e5).toFixed(0)}L`;
