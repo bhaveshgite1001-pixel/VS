@@ -12,6 +12,9 @@ import { ComparisonChart } from '@/components/ui/ComparisonChart';
 import { Header } from '@/components/ui/Header';
 import { formatINR } from '@/lib/utils/formatters';
 
+import { ScenarioWorkspace } from '@/components/ui/ScenarioWorkspace';
+import { deserializeInputsFromUrl } from '@/lib/utils/scenarioState';
+
 const defaultInputs: PrepayVsInvestInputs = {
   outstandingLoanBalance: 8000000,
   remainingTenureYears: 15,
@@ -24,6 +27,12 @@ const defaultInputs: PrepayVsInvestInputs = {
 
 export default function PrepayVsInvestPage() {
   const [inputs, setInputs] = useState<PrepayVsInvestInputs>(defaultInputs);
+
+  React.useEffect(() => {
+    const hydrated = deserializeInputsFromUrl<PrepayVsInvestInputs>(defaultInputs);
+    setInputs(hydrated);
+  }, []);
+
   const result = useMemo(() => calculatePrepayVsInvest(inputs), [inputs]);
 
   return (
@@ -45,6 +54,13 @@ export default function PrepayVsInvestPage() {
 
         {/* Analytics & Visualization Column */}
         <div className="flex-1 flex flex-col gap-4 min-w-0">
+          <ScenarioWorkspace
+            engineId="prepay-vs-invest"
+            engineTitle="Prepay vs. Invest"
+            currentInputs={inputs}
+            onApplyScenario={(newInputs) => setInputs(newInputs)}
+          />
+
           <VerdictBar result={result} outstandingLoan={inputs.outstandingLoanBalance} />
           
           <div className="h-[380px] lg:h-[400px] w-full">

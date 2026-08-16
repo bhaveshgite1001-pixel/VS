@@ -12,6 +12,9 @@ import { ComparisonChart } from '@/components/ui/ComparisonChart';
 import { Header } from '@/components/ui/Header';
 import { formatINR } from '@/lib/utils/formatters';
 
+import { ScenarioWorkspace } from '@/components/ui/ScenarioWorkspace';
+import { deserializeInputsFromUrl } from '@/lib/utils/scenarioState';
+
 const defaultInputs: EmiVsUpfrontInputs = {
   purchasePrice: 150000,
   upfrontDiscountAmount: 10000,
@@ -24,6 +27,12 @@ const defaultInputs: EmiVsUpfrontInputs = {
 
 export default function EmiVsUpfrontPage() {
   const [inputs, setInputs] = useState<EmiVsUpfrontInputs>(defaultInputs);
+
+  React.useEffect(() => {
+    const hydrated = deserializeInputsFromUrl<EmiVsUpfrontInputs>(defaultInputs);
+    setInputs(hydrated);
+  }, []);
+
   const result = useMemo(() => calculateEmiVsUpfront(inputs), [inputs]);
 
   return (
@@ -45,6 +54,13 @@ export default function EmiVsUpfrontPage() {
 
         {/* Analytics & Visualization Column */}
         <div className="flex-1 flex flex-col gap-4 min-w-0">
+          <ScenarioWorkspace
+            engineId="emi-vs-upfront"
+            engineTitle="No-Cost EMI vs. Upfront"
+            currentInputs={inputs}
+            onApplyScenario={(newInputs) => setInputs(newInputs)}
+          />
+
           <VerdictBar result={result} tenureMonths={inputs.emiTenureMonths} />
 
           <div className="h-[380px] lg:h-[400px] w-full">

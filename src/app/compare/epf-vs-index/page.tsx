@@ -12,6 +12,9 @@ import { formatINR } from '@/lib/utils/formatters';
 
 import { EpfSensitivity } from '@/components/epf-vs-index/EpfSensitivity';
 
+import { ScenarioWorkspace } from '@/components/ui/ScenarioWorkspace';
+import { deserializeInputsFromUrl } from '@/lib/utils/scenarioState';
+
 const defaultInputs: EpfVsIndexInputs = {
   monthlyBasicSalary: 120000,
   vpfContributionPercent: 18,
@@ -23,6 +26,12 @@ const defaultInputs: EpfVsIndexInputs = {
 
 export default function EpfVsIndexPage() {
   const [inputs, setInputs] = useState<EpfVsIndexInputs>(defaultInputs);
+
+  React.useEffect(() => {
+    const hydrated = deserializeInputsFromUrl<EpfVsIndexInputs>(defaultInputs);
+    setInputs(hydrated);
+  }, []);
+
   const result = useMemo(() => calculateEpfVsIndex(inputs), [inputs]);
 
   return (
@@ -44,6 +53,13 @@ export default function EpfVsIndexPage() {
 
         {/* Analytics & Visualization Column */}
         <div className="flex-1 flex flex-col gap-4 min-w-0">
+          <ScenarioWorkspace
+            engineId="epf-vs-index"
+            engineTitle="EPF vs. Index Funds"
+            currentInputs={inputs}
+            onApplyScenario={(newInputs) => setInputs(newInputs)}
+          />
+
           <VerdictBar result={result} horizon={inputs.investmentHorizonYears} />
 
           <div className="h-[380px] lg:h-[400px] w-full">

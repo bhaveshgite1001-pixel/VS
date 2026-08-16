@@ -12,6 +12,9 @@ import { ComparisonChart } from '@/components/ui/ComparisonChart';
 import { Header } from '@/components/ui/Header';
 import { formatINR } from '@/lib/utils/formatters';
 
+import { ScenarioWorkspace } from '@/components/ui/ScenarioWorkspace';
+import { deserializeInputsFromUrl } from '@/lib/utils/scenarioState';
+
 const defaultInputs: NpsVsMfInputs = {
   basicSalary: 1500000,
   employerMatchPercent: 10,
@@ -23,6 +26,12 @@ const defaultInputs: NpsVsMfInputs = {
 
 export default function NpsVsMfPage() {
   const [inputs, setInputs] = useState<NpsVsMfInputs>(defaultInputs);
+
+  React.useEffect(() => {
+    const hydrated = deserializeInputsFromUrl<NpsVsMfInputs>(defaultInputs);
+    setInputs(hydrated);
+  }, []);
+
   const result = useMemo(() => calculateNpsVsMf(inputs), [inputs]);
 
   return (
@@ -44,6 +53,13 @@ export default function NpsVsMfPage() {
 
         {/* Analytics & Visualization Column */}
         <div className="flex-1 flex flex-col gap-4 min-w-0">
+          <ScenarioWorkspace
+            engineId="nps-vs-mf"
+            engineTitle="NPS vs. Mutual Funds"
+            currentInputs={inputs}
+            onApplyScenario={(newInputs) => setInputs(newInputs)}
+          />
+
           <VerdictBar result={result} horizon={inputs.investmentHorizonYears} />
 
           <div className="h-[380px] lg:h-[400px] w-full">

@@ -11,6 +11,9 @@ import { AssumptionsDrawer } from '@/components/rent-vs-buy/AssumptionsDrawer';
 import { ComparisonChart } from '@/components/ui/ComparisonChart';
 import { Header } from '@/components/ui/Header';
 
+import { ScenarioWorkspace } from '@/components/ui/ScenarioWorkspace';
+import { deserializeInputsFromUrl } from '@/lib/utils/scenarioState';
+
 const defaultInputs: RentVsBuyInputs = {
   propertyValue: 12000000,
   downPaymentPercent: 20,
@@ -27,6 +30,13 @@ const defaultInputs: RentVsBuyInputs = {
 
 export default function RentVsBuyPage() {
   const [inputs, setInputs] = useState<RentVsBuyInputs>(defaultInputs);
+
+  // Hydrate from URL query parameters on mount
+  React.useEffect(() => {
+    const hydrated = deserializeInputsFromUrl<RentVsBuyInputs>(defaultInputs);
+    setInputs(hydrated);
+  }, []);
+
   const result = useMemo(() => calculateRentVsBuy(inputs), [inputs]);
 
   const emi = useMemo(() => {
@@ -56,6 +66,13 @@ export default function RentVsBuyPage() {
 
         {/* Analytics & Visualization Column */}
         <div className="flex-1 flex flex-col gap-4 min-w-0">
+          <ScenarioWorkspace
+            engineId="rent-vs-buy"
+            engineTitle="Rent vs. Buy"
+            currentInputs={inputs}
+            onApplyScenario={(newInputs) => setInputs(newInputs)}
+          />
+
           <VerdictBar result={result} horizon={inputs.comparisonHorizonYears} emi={emi} currentRent={inputs.currentMonthlyRent} />
           
           <div className="h-[380px] lg:h-[400px] w-full">
