@@ -87,7 +87,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
               {isActive && (
                 <motion.div
                   layoutId="uc-tab-indicator"
-                  className="absolute inset-0 rounded-xl bg-orange-500/20 border border-orange-500/30"
+                  className="absolute inset-0 rounded-xl bg-indigo-500/20 border border-indigo-500/30"
                   initial={false}
                   transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                 />
@@ -132,7 +132,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ inputs, setInputs })
 
             <div className="mt-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5 text-[11px] text-white/40 leading-relaxed space-y-2">
               <p className="text-white/60 font-semibold">How this works:</p>
-              <p>If you <span className="text-orange-400">rent out</span> the property after possession, this rental income offsets your EMI + maintenance outflow from the portfolio.</p>
+              <p>If you <span className="text-indigo-400">rent out</span> the property after possession, this rental income offsets your EMI + maintenance outflow from the portfolio.</p>
               <p>Set yield to <span className="text-white/60">0%</span> if you plan to <span className="text-indigo-400">self-occupy</span> (no rental income, but you save equivalent rent elsewhere).</p>
             </div>
           </>

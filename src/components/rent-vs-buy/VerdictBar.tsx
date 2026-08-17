@@ -60,14 +60,14 @@ export const VerdictBar: React.FC<VerdictBarProps> = ({ result, horizon, emi, cu
       label: "Interest Paid",
       numericValue: totalInterestPaid,
       isCurrency: true,
-      accentClass: "text-rose-400 bg-rose-400/10 border-rose-500/20"
+      accentClass: "text-amber-400 bg-amber-400/10 border-amber-500/20"
     },
     {
       icon: <Home size={14} />,
       label: "Rent Paid",
       numericValue: totalRentPaid,
       isCurrency: true,
-      accentClass: "text-violet-400 bg-violet-400/10 border-violet-500/20"
+      accentClass: "text-indigo-400 bg-indigo-400/10 border-indigo-500/20"
     },
     {
       icon: <ArrowRightLeft size={14} />,
@@ -75,7 +75,7 @@ export const VerdictBar: React.FC<VerdictBarProps> = ({ result, horizon, emi, cu
       numericValue: Math.abs(monthlyCashFlowDiff),
       isCurrency: true,
       prefix: monthlyCashFlowDiff > 0 ? "Buyer pays +" : "Renter pays +",
-      accentClass: monthlyCashFlowDiff > 0 ? 'text-rose-400 bg-rose-400/10 border-rose-500/20' : 'text-emerald-400 bg-emerald-400/10 border-emerald-500/20'
+      accentClass: monthlyCashFlowDiff > 0 ? 'text-amber-400 bg-amber-400/10 border-amber-500/20' : 'text-emerald-400 bg-emerald-400/10 border-emerald-500/20'
     }
   ];
 

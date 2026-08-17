@@ -44,7 +44,7 @@ export function CashFlowChart({ data, possessionYear }: CashFlowChartProps) {
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
                 <span className="text-white/60">{entry.name}</span>
               </span>
-              <span className={`font-mono font-medium ${entry.value > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+              <span className={`font-mono font-medium ${entry.value > 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
                 {formatINR(Math.abs(entry.value))}
               </span>
             </div>
@@ -62,7 +62,7 @@ export function CashFlowChart({ data, possessionYear }: CashFlowChartProps) {
         </h3>
         <div className="flex items-center gap-3 text-[9px] text-white/40">
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500" /> Rental Income</span>
-          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" /> Outflows</span>
+          <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-500" /> Outflows</span>
         </div>
       </div>
       <div className="h-[280px] lg:h-[300px]">

@@ -75,7 +75,7 @@ export function HeroKpis({ result }: HeroKpisProps) {
             className={`px-3 py-1.5 rounded-xl font-mono text-xs font-bold border ${
               isPortfolioSufficient
                 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-                : 'bg-red-500/10 text-red-400 border-red-500/20'
+                : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
             }`}
           >
             {statusText}
@@ -121,24 +121,24 @@ export function HeroKpis({ result }: HeroKpisProps) {
         </div>
 
         {/* KPI 3: Depletion Timeline */}
-        <div className="relative p-3.5 rounded-2xl bg-violet-500/[0.06] border border-violet-500/15 overflow-hidden">
+        <div className="relative p-3.5 rounded-2xl bg-indigo-500/[0.06] border border-indigo-500/15 overflow-hidden">
           <div className="relative z-10">
-            <div className="flex items-center gap-1.5 mb-1 text-violet-400">
+            <div className="flex items-center gap-1.5 mb-1 text-indigo-400">
               <Calendar size={14} />
               <span className="text-[9px] uppercase tracking-[0.15em] font-semibold text-white/40">
                 Depletion Time
               </span>
             </div>
-            <p className={`text-[13px] font-bold font-mono tracking-tight ${depletionYearMonth ? 'text-red-400' : 'text-emerald-400'}`}>
+            <p className={`text-[13px] font-bold font-mono tracking-tight ${depletionYearMonth ? 'text-amber-400' : 'text-emerald-400'}`}>
               {depletionText}
             </p>
           </div>
         </div>
 
         {/* KPI 4: Total Cash Drained */}
-        <div className="relative p-3.5 rounded-2xl bg-red-500/[0.06] border border-red-500/15 overflow-hidden">
+        <div className="relative p-3.5 rounded-2xl bg-amber-500/[0.06] border border-amber-500/15 overflow-hidden">
           <div className="relative z-10">
-            <div className="flex items-center gap-1.5 mb-1 text-red-400">
+            <div className="flex items-center gap-1.5 mb-1 text-amber-400">
               <Receipt size={14} />
               <span className="text-[9px] uppercase tracking-[0.15em] font-semibold text-white/40">
                 Total Cash Outflows
@@ -166,9 +166,9 @@ export function HeroKpis({ result }: HeroKpisProps) {
         </div>
 
         {/* KPI 6: Monthly EMI */}
-        <div className="relative p-3.5 rounded-2xl bg-orange-500/[0.06] border border-orange-500/15 overflow-hidden">
+        <div className="relative p-3.5 rounded-2xl bg-amber-500/[0.06] border border-amber-500/15 overflow-hidden">
           <div className="relative z-10">
-            <div className="flex items-center gap-1.5 mb-1 text-orange-400">
+            <div className="flex items-center gap-1.5 mb-1 text-amber-400">
               <Banknote size={14} />
               <span className="text-[9px] uppercase tracking-[0.15em] font-semibold text-white/40">
                 Monthly EMI

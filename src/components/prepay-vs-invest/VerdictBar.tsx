@@ -75,7 +75,7 @@ export const VerdictBar: React.FC<VerdictBarProps> = ({ result, outstandingLoan 
       icon: <ArrowRightLeft size={14} />,
       label: "Time Saved",
       value: monthsSaved > 0 ? timeSavedStr : 'None',
-      accentClass: monthsSaved > 0 ? 'text-rose-400 bg-rose-400/10 border-rose-500/20' : 'text-zinc-400 bg-zinc-400/10 border-zinc-500/20'
+      accentClass: monthsSaved > 0 ? 'text-amber-400 bg-amber-400/10 border-amber-500/20' : 'text-zinc-400 bg-zinc-400/10 border-zinc-500/20'
     }
   ];
 

@@ -38,8 +38,8 @@ const secondaryTools = [
     output: 'See tax savings & liquidity trade-off',
     icon: ShieldCheck,
     color: '#8b5cf6',
-    bg: 'bg-violet-500/10',
-    border: 'border-violet-500/20',
+    bg: 'bg-indigo-500/10',
+    border: 'border-indigo-500/20',
     link: '/compare/nps-vs-mf',
   },
   {
@@ -60,8 +60,8 @@ const secondaryTools = [
     output: 'See required investment return',
     icon: ShoppingCart,
     color: '#ec4899',
-    bg: 'bg-pink-500/10',
-    border: 'border-pink-500/20',
+    bg: 'bg-indigo-500/10',
+    border: 'border-indigo-500/20',
     link: '/compare/emi-vs-upfront',
   },
   {
@@ -71,8 +71,8 @@ const secondaryTools = [
     output: 'See cash flow burn & net worth journey',
     icon: Building2,
     color: '#f97316',
-    bg: 'bg-orange-500/10',
-    border: 'border-orange-500/20',
+    bg: 'bg-amber-500/10',
+    border: 'border-amber-500/20',
     link: '/compare/under-construction',
   }
 ];

@@ -17,8 +17,8 @@ export const DynamicHero: React.FC<DynamicHeroProps> = ({ winner, netWealthGap, 
   const gradientClass = isTie
     ? 'from-zinc-500 via-zinc-400 to-zinc-500'
     : isBuyer
-      ? 'from-blue-400 via-blue-500 to-indigo-500'
-      : 'from-emerald-400 via-emerald-500 to-teal-500';
+      ? 'from-indigo-400 via-indigo-500 to-indigo-500'
+      : 'from-emerald-400 via-emerald-500 to-emerald-500';
 
   const bgGlowClass = isTie
     ? ''
@@ -31,12 +31,12 @@ export const DynamicHero: React.FC<DynamicHeroProps> = ({ winner, netWealthGap, 
   return (
     <div className={`relative overflow-hidden glass-card p-8 md:p-10 ${bgGlowClass} animate-float-in`}>
       {/* Background decorative gradient blob */}
-      <div className={`absolute -top-24 -right-24 w-64 h-64 rounded-full blur-[100px] opacity-20 ${isBuyer ? 'bg-blue-500' : isTie ? 'bg-zinc-500' : 'bg-emerald-500'}`} />
-      <div className={`absolute -bottom-16 -left-16 w-48 h-48 rounded-full blur-[80px] opacity-10 ${isBuyer ? 'bg-indigo-500' : isTie ? 'bg-zinc-500' : 'bg-teal-500'}`} />
+      <div className={`absolute -top-24 -right-24 w-64 h-64 rounded-full blur-[100px] opacity-20 ${isBuyer ? 'bg-indigo-500' : isTie ? 'bg-zinc-500' : 'bg-emerald-500'}`} />
+      <div className={`absolute -bottom-16 -left-16 w-48 h-48 rounded-full blur-[80px] opacity-10 ${isBuyer ? 'bg-indigo-500' : isTie ? 'bg-zinc-500' : 'bg-emerald-500'}`} />
 
       <div className="relative z-10">
         <div className="flex items-center gap-3 mb-4">
-          <div className={`p-2.5 rounded-xl ${isBuyer ? 'bg-blue-500/15 text-blue-400' : isTie ? 'bg-zinc-500/15 text-zinc-400' : 'bg-emerald-500/15 text-emerald-400'}`}>
+          <div className={`p-2.5 rounded-xl ${isBuyer ? 'bg-indigo-500/15 text-indigo-400' : isTie ? 'bg-zinc-500/15 text-zinc-400' : 'bg-emerald-500/15 text-emerald-400'}`}>
             <IconComponent size={22} strokeWidth={2.5} />
           </div>
           <span className="text-sm font-semibold tracking-[0.2em] uppercase text-zinc-500">

@@ -48,7 +48,7 @@ export default function UnderConstructionPage() {
     <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col p-3 md:p-4 relative pb-12">
       {/* Ambient blobs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-orange-600/[0.04] blur-[120px]" />
+        <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-amber-600/[0.04] blur-[120px]" />
         <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full bg-emerald-600/[0.03] blur-[120px]" />
       </div>
 

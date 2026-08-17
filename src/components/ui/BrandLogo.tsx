@@ -74,7 +74,7 @@ export function BrandLogo({
         <div className="flex flex-col">
           <div className="flex items-center leading-none tracking-normal">
             {/* 'D' in dual-color gradient representing the decision origin */}
-            <span className={`font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-emerald-400 ${currentSize.text}`}>
+            <span className={`font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400 ${currentSize.text}`}>
               D
             </span>
             {/* 'side' in high-contrast crisp white with generous letter spacing */}
