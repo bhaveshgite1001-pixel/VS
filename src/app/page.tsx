@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Scale, Home, ShieldCheck, Briefcase, ShoppingCart, ArrowRight, Landmark, Compass, Share2, CheckCircle2, Sparkles, TrendingUp, Lock } from 'lucide-react';
+import { Scale, Home, ShieldCheck, Briefcase, ShoppingCart, ArrowRight, Landmark, Building2, Compass, Share2, CheckCircle2, Sparkles, TrendingUp, Lock } from 'lucide-react';
 import { BrandLogo } from '@/components/ui/BrandLogo';
 
 const flagshipTool = {
@@ -63,6 +63,17 @@ const secondaryTools = [
     bg: 'bg-pink-500/10',
     border: 'border-pink-500/20',
     link: '/compare/emi-vs-upfront',
+  },
+  {
+    id: 'under-construction',
+    title: 'Under-Construction Property',
+    question: 'Model the full 30-year lifecycle: GST tranches, Pre-EMI, possession shock & rental yield.',
+    output: 'See cash flow burn & net worth journey',
+    icon: Building2,
+    color: '#f97316',
+    bg: 'bg-orange-500/10',
+    border: 'border-orange-500/20',
+    link: '/compare/under-construction',
   }
 ];
 

@@ -180,3 +180,68 @@ export interface EmiVsUpfrontResult {
   winner: 'upfront' | 'emi' | 'tie';
   sensitivity: EmiVsUpfrontSensitivity;
 }
+
+// ── Under-Construction Property: Portfolio Needed Calculator ──────────
+
+export interface UnderConstructionInputs {
+  // Group A: Property & Taxes
+  propertyBaseValue: number;
+  downPayment: number;
+  stampDutyPercent: number;
+  registrationPercent: number;
+  constructionPeriodMonths: number;
+
+  // Group B: Appreciation & Maintenance
+  appreciationConstructionCagr: number;
+  appreciationPostPossessionCagr: number;
+  monthlySocietyMaintenance: number;
+
+  // Group C: Rental Income (Post-Possession)
+  targetRentalIncomeMonthly: number;
+  rentalIncomeEscalation: number;
+
+  // Group D: Portfolio & Debt
+  totalPortfolio: number;
+  liquidBucketCapacity: number;
+  liquidFundReturn: number;
+  equityReturn: number;
+  ltcgTaxPercent: number;
+  homeLoanRate: number;
+  homeLoanTenureYears: number;
+}
+
+export interface UCYearData {
+  year: number;
+  // Cash flow components (annual totals)
+  upfrontPaid: number;
+  preEmi: number;
+  emi: number;
+  maintenancePaid: number;
+  rentalIncome: number;
+  // Portfolio snapshots (end-of-year)
+  propertyValue: number;
+  loanOutstanding: number;
+  liquidFund: number;
+  mfPortfolio: number;
+  totalPortfolio: number; // liquid + mf
+  baselinePortfolio: number; // what portfolio would have been if invested and untouched
+}
+
+export interface UnderConstructionResult {
+  yearlyData: UCYearData[];
+  requiredStartingPortfolio: number; // Minimum portfolio needed on Day 1 to never run out of money
+  portfolioGap: number; // Current portfolio minus required portfolio (+ = surplus, - = deficit)
+  isPortfolioSufficient: boolean;
+  depletionYearMonth: { year: number; month: number } | null; // When current portfolio runs out (if insufficient)
+  totalInterestPaid: number;
+  totalLtcgPaid: number;
+  totalMaintenancePaid: number;
+  totalCashDrained: number; // Total outflows paid from portfolio
+  startingPortfolio: number; // Current liquid + MF portfolio
+  portfolioRemaining: number; // What is left at Year 30 (or 0 if depleted)
+  possessionMonth: number;
+  bucketShiftCount: number;
+  finalPropertyValue: number;
+  finalLoanOutstanding: number;
+  emiAmount: number;
+}

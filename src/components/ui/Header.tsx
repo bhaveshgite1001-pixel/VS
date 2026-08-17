@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Home, Briefcase, ShieldCheck, Landmark, ShoppingCart, ArrowRight } from 'lucide-react';
+import { ChevronDown, Home, Briefcase, ShieldCheck, Landmark, ShoppingCart, Building2, ArrowRight } from 'lucide-react';
 import { BrandLogo } from '@/components/ui/BrandLogo';
 
 const engines = [
@@ -12,6 +12,7 @@ const engines = [
   { id: 'nps-vs-mf', title: 'NPS vs. Mutual Funds', icon: ShieldCheck, color: '#8b5cf6', link: '/compare/nps-vs-mf' },
   { id: 'epf-vs-index', title: 'EPF vs. Index Funds', icon: Landmark, color: '#f59e0b', link: '/compare/epf-vs-index' },
   { id: 'emi-vs-upfront', title: 'No-Cost EMI vs. Upfront', icon: ShoppingCart, color: '#ec4899', link: '/compare/emi-vs-upfront' },
+  { id: 'under-construction', title: 'Under-Construction Property', icon: Building2, color: '#f97316', link: '/compare/under-construction' },
 ];
 
 export function Header({ subtitle }: { subtitle: string }) {
@@ -61,7 +62,7 @@ export function Header({ subtitle }: { subtitle: string }) {
                 <span className="text-[10px] font-mono text-white/40 uppercase tracking-wider font-semibold">
                   Switch Decision Engine
                 </span>
-                <span className="text-[9px] font-mono text-indigo-400">5 Live</span>
+                <span className="text-[9px] font-mono text-indigo-400">6 Live</span>
               </div>
 
               {engines.map((engine) => {
